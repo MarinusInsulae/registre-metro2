@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#d71920">
+<meta name="application-name" content="Registre Metro">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<title>Registre ferroviari · Metro de Barcelona</title>
+<style>
+:root{--red:#d71920;--line-soft:#efb8bb;--red-dark:#a80f17;--ink:#242424;--muted:#686868;--paper:#fff;--bg:#f6f6f7;--line:#e5e5e7;--green:#267847;--shadow:0 8px 26px rgba(0,0,0,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45}button,select,input{font:inherit}button,select{cursor:pointer}button:focus-visible,select:focus-visible,.station:focus-visible{outline:3px solid #377dff;outline-offset:3px}.topbar{background:var(--red);color:white;padding:22px 18px 20px}.topbar-inner{max-width:1040px;margin:auto;display:flex;align-items:center;gap:14px}.line-badge{flex:none;width:56px;height:56px;border:3px solid #fff;border-radius:50%;display:grid;place-items:center;font-size:27px;font-weight:800}.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;opacity:.9}.topbar h1{font-size:clamp(1.45rem,4vw,2.15rem);line-height:1.1;margin:3px 0 0}.subtitle{margin:6px 0 0;font-size:.95rem;opacity:.92}.wrap{max-width:1040px;margin:20px auto;padding:0 16px 36px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:18px;align-items:start}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:20px}.card h2{font-size:1.08rem;margin:0 0 14px}.map-card{min-width:0}.map-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}.map-head p{margin:3px 0 0;color:var(--muted);font-size:.88rem}.pill{background:color-mix(in srgb,var(--red) 9%,white);color:var(--red-dark);border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:750;white-space:nowrap}.line-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.line-tab{flex:1;min-width:68px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);padding:10px 12px;font-weight:800;min-height:43px}.line-tab[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}.map-scroll{overflow:visible;padding:10px 4px 8px;max-width:470px;margin-inline:auto;width:100%;display:flex;justify-content:center}.route{list-style:none;margin:0 auto;padding:0 0 0 6px;position:relative;width:max-content;max-width:100%;}.route:before{content:"";position:absolute;left:22px;top:10px;bottom:10px;width:6px;background:var(--line-soft);border-radius:6px}.route-segment{position:absolute;left:22px;width:6px;background:var(--red);border-radius:6px;z-index:1;pointer-events:none}.station{position:relative;z-index:2;display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:10px;min-height:39px;width:100%;padding:4px 8px 4px 0;margin:0;border:0;border-radius:10px;background:transparent;text-align:left;color:inherit}.station:hover{background:color-mix(in srgb,var(--red) 6%,white)}.station .dot{z-index:2;justify-self:center;width:21px;height:21px;border:3px solid var(--red);border-radius:50%;background:white;display:grid;place-items:center;transition:transform .12s,border-width .12s}.station .dot:after{content:"";width:5px;height:5px;background:transparent;border-radius:50%}.station[data-status="passed"] .dot{background:var(--red);border-color:var(--red)}.station[data-status="passed"] .dot:after{background:#fff}.station[data-status="visited"] .dot{background:var(--red);border-color:var(--red)}.station[data-status="visited"] .dot:after{display:none}.station .name{font-size:.94rem;line-height:1.25;overflow-wrap:anywhere}.station.selected{background:color-mix(in srgb,var(--red) 8%,white)}.station.selected .dot{border-width:5px;transform:scale(1.08)}.station.selected .name{font-weight:800;color:var(--red-dark)}.legend{display:grid;gap:9px;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}.legend-row{display:flex;align-items:center;gap:9px;font-size:.84rem;color:#424242}.legend-dot{width:17px;height:17px;border:2px solid var(--red);border-radius:50%;background:#fff;flex:none;display:grid;place-items:center}.legend-dot.passed,.legend-dot.visited{background:var(--red)}.legend-dot.passed:after{content:"";width:4px;height:4px;background:white;border-radius:50%}.side{display:grid;gap:18px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.stat{background:#fafafa;border:1px solid var(--line);border-radius:12px;padding:12px 10px}.stat .num{display:block;font-size:1.65rem;line-height:1.1;font-weight:800;font-variant-numeric:tabular-nums}.stat .label{display:block;font-size:.76rem;color:var(--muted);margin-top:6px}.stat.visited .num{color:var(--red)}.stat.passed .num{color:var(--red-dark)}.stat.pending .num{color:#555}.progress-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:20px 0 8px}.progress-top strong{font-size:1.5rem;font-variant-numeric:tabular-nums}.progress-top span{font-size:.82rem;color:var(--muted)}.progress-track{height:12px;background:color-mix(in srgb,var(--red) 15%,white);border-radius:999px;overflow:hidden}.progress-fill{height:100%;width:0;background:var(--red);border-radius:999px;transition:width .2s}.progress-note{font-size:.8rem;color:var(--muted);margin:9px 0 0}.editor{display:grid;gap:14px}.field{display:grid;gap:6px}.field label{font-size:.83rem;font-weight:750}.field select{width:100%;min-height:45px;padding:10px 12px;border:1px solid #cfcfd2;border-radius:10px;background:white;color:var(--ink)}.selected-status{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:10px;background:#fafafa;border:1px solid var(--line);font-size:.88rem}.mini-dot{width:14px;height:14px;border:2px solid var(--red);border-radius:50%;background:white;flex:none}.mini-dot[data-status="passed"],.mini-dot[data-status="visited"]{background:var(--red)}.mini-dot[data-status="passed"]{position:relative}.mini-dot[data-status="passed"]:after{content:"";position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;left:3px;top:3px}.status-line{font-weight:700}.hint{font-size:.8rem;color:var(--muted);margin:0}.save-row{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:12px;background:#f6fbf7;border:1px solid #d8ebdd}.save-row.error{background:#fff7f7;border-color:#f0c7c7}.save-icon{font-size:1.05rem;line-height:1.5}.save-title{font-size:.85rem;font-weight:800;color:var(--green)}.save-row.error .save-title{color:var(--red-dark)}.save-time{font-size:.77rem;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.btn{border:1px solid #d0d0d2;background:white;color:var(--ink);padding:11px 12px;border-radius:10px;font-weight:750;font-size:.86rem;min-height:44px}.btn:hover{background:#f7f7f8}.btn.primary{background:var(--red);border-color:var(--red);color:#fff}.btn.primary:hover{filter:brightness(.9)}.btn.danger{color:var(--red-dark);border-color:#e8bfc1}.btn.wide{grid-column:1/-1}.backup-help{font-size:.8rem;color:var(--muted);margin:0}.footer-note{max-width:1040px;margin:-15px auto 28px;padding:0 16px;color:var(--muted);font-size:.78rem}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+[hidden]{display:none!important}
+
+@media(max-width:760px){.wrap{grid-template-columns:1fr;margin-top:14px;gap:14px}.side{grid-row:1}.card{padding:16px;border-radius:15px}.topbar{padding:18px 16px}.line-badge{width:48px;height:48px;font-size:24px}.stat{padding:10px 8px}.stat .num{font-size:1.45rem}.stat .label{font-size:.72rem}.map-card{padding-top:16px}.map-scroll{max-width:470px;padding-right:0}.route{width:max-content;max-width:100%}.legend{grid-template-columns:1fr}.footer-note{margin-top:0}}
+@media(min-width:761px){.map-card{grid-row:1 / span 2}.legend{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar" id="topbar"><div class="topbar-inner"><div class="line-badge" id="line-badge" aria-label="Línia 1">L1</div><div><div class="eyebrow">Metro de Barcelona</div><h1 id="page-title">El meu registre de la L1</h1><p class="subtitle">Marca les estacions que has recorregut.</p></div></div></header>
+<main class="wrap" id="main-wrap">
+<section class="card map-card" aria-labelledby="map-title">
+  <div class="map-head"><div><h2 id="map-title">Esquema de la línia</h2><p id="map-description">Selecciona una estació per consultar-ne o canviar-ne l'estat.</p></div><span class="pill" id="station-total">30 estacions</span></div>
+  <nav class="line-tabs" aria-label="Selecciona la línia de metro"><button type="button" class="line-tab" data-line="L1" aria-pressed="true">L1</button><button type="button" class="line-tab" data-line="L2" aria-pressed="false">L2</button><button type="button" class="line-tab" data-line="L3" aria-pressed="false">L3</button><button type="button" class="line-tab" data-line="L4" aria-pressed="false">L4</button><button type="button" class="line-tab" data-line="L5" aria-pressed="false">L5</button><button type="button" class="line-tab" data-line="L9N" aria-pressed="false">L9N</button><button type="button" class="line-tab" data-line="L9S" aria-pressed="false">L9S</button><button type="button" class="line-tab" data-line="L10N" aria-pressed="false">L10N</button><button type="button" class="line-tab" data-line="L10S" aria-pressed="false">L10S</button><button type="button" class="line-tab" data-line="L11" aria-pressed="false">L11</button></nav>
+  <div class="map-scroll" id="map-scroll"><ol class="route" id="route" aria-label="Estacions de la línia seleccionada en ordre"></ol></div>
+  <div class="legend" aria-label="Llegenda dels estats">
+    <div class="legend-row"><span class="legend-dot" aria-hidden="true"></span><span><strong>Pendent:</strong> encara no hi he anat.</span></div>
+    <div class="legend-row"><span class="legend-dot passed" aria-hidden="true"></span><span><strong>Hi he passat:</strong> he travessat l'estació amb tren, sense pujar ni baixar.</span></div>
+    <div class="legend-row"><span class="legend-dot visited" aria-hidden="true"></span><span><strong>Visitada:</strong> hi he pujat o n'he baixat.</span></div>
+  </div>
+</section>
+<aside class="side">
+  <section class="card" aria-labelledby="stats-title">
+    <h2 id="stats-title">El meu progrés · <span id="stats-line">L1</span></h2>
+    <div class="stats"><div class="stat visited"><span class="num" id="visited-count">0</span><span class="label">Visitades</span></div><div class="stat passed"><span class="num" id="passed-count">0</span><span class="label">Travessades</span></div><div class="stat pending"><span class="num" id="pending-count">30</span><span class="label">Pendents</span></div></div>
+    <div class="progress-top"><span>Progrés ponderat</span><strong id="progress-value">0%</strong></div><div class="progress-track" id="progress-track" role="progressbar" aria-label="Progrés ponderat de la línia seleccionada" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div><p class="progress-note" id="progress-note">Cada estació visitada val el 100%; cada estació travessada val el 50%.</p>
+  </section>
+  <section class="card" id="edit-card" aria-labelledby="edit-title"><h2 id="edit-title">Estació seleccionada</h2><div class="editor">
+    <div class="field"><label for="station-select">Estació</label><select id="station-select" aria-label="Selecciona una estació"></select></div>
+    <div class="selected-status"><span class="mini-dot" id="mini-dot" data-status="pending" aria-hidden="true"></span><span>Estat actual: <span class="status-line" id="status-current">Pendent de visitar</span></span></div>
+    <div class="field"><label for="status-select">Modificar l'estat</label><select id="status-select"><option value="pending">Pendent de visitar</option><option value="passed">Hi he passat amb tren</option><option value="visited">Hi he pujat o n'he baixat</option></select></div><p class="hint">Els canvis es desen automàticament en aquest navegador.</p>
+    <div class="save-row" id="save-row" role="status" aria-live="polite"><span class="save-icon" id="save-icon" aria-hidden="true">✓</span><div><div class="save-title" id="save-title">Dades desades</div><div class="save-time" id="save-time">Encara no s'ha fet cap canvi.</div></div></div>
+    <div class="actions"><button class="btn primary" id="export-btn" type="button">Exportar còpia</button><button class="btn" id="import-btn" type="button">Importar còpia</button><input class="sr-only" id="import-file" type="file" accept=".json,application/json"><button class="btn danger wide" id="reset-btn" type="button">Reiniciar aquesta línia</button></div><p class="backup-help">La còpia inclou totes les línies. També pots importar còpies de seguretat de versions anteriors. Un fitxer incorrecte no substituirà el registre actual.</p>
+  </div></section>
+</aside>
+</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.</p>
+<script>
+(() => {
+'use strict';
+const STORAGE_KEY='registreMetroBarcelona_v2';
+let networkZoom=1,networkPanX=0,networkPanY=0;
+const OLD_L1_KEY='registreMetroBarcelonaL1_v1';
+const SCHEMA_VERSION=4;
+const lines={
+ L1:{name:'L1',color:'#d71920',soft:'#efb8bb',dark:'#a80f17',stations:['Hospital de Bellvitge','Bellvitge','Av. Carrilet','Rambla Just Oliveras','Can Serra','Florida','Torrassa','Santa Eulàlia','Mercat Nou','Plaça de Sants','Hostafrancs','Espanya','Rocafort','Urgell','Universitat','Catalunya','Urquinaona','Arc de Triomf','Marina','Glòries','Clot','Navas','La Sagrera','Fabra i Puig','Sant Andreu','Torras i Bages','Trinitat Vella','Baró de Viver','Santa Coloma','Fondo']},
+ L2:{name:'L2',color:'#8e248b',soft:'#dfb6dd',dark:'#6f176d',stations:['Paral·lel','Sant Antoni','Universitat','Passeig de Gràcia','Tetuan','Monumental','Sagrada Família','Encants','Clot','Bac de Roda','Sant Martí','La Pau','Verneda','Artigues | Sant Adrià','Sant Roc','Gorg','Pep Ventura','Badalona Pompeu Fabra']},
+ L3:{name:'L3',color:'#16864b',soft:'#b7dfc7',dark:'#106337',stations:['Zona Universitària','Palau Reial','Maria Cristina','Les Corts','Plaça del Centre','Sants Estació','Tarragona','Espanya','Poble Sec','Paral·lel','Drassanes','Liceu','Catalunya','Passeig de Gràcia','Diagonal','Fontana','Lesseps','Vallcarca','Penitents','Vall d’Hebron','Montbau','Mundet','Valldaura','Canyelles','Roquetes','Trinitat Nova']},
+ L4:{name:'L4',color:'#e6b800',soft:'#f5e6a3',dark:'#987900',stations:['La Pau','Besòs','Besòs Mar','El Maresme | Fòrum','Selva de Mar','Poblenou','Llacuna','Bogatell','Ciutadella | Vila Olímpica','Barceloneta','Jaume I','Urquinaona','Passeig de Gràcia','Girona','Verdaguer','Joanic','Alfons X','Guinardó | Hospital de Sant Pau','Maragall','Llucmajor','Via Júlia','Trinitat Nova']},
+ L5:{name:'L5',color:'#0055a4',soft:'#b5cde5',dark:'#003b78',stations:['Cornellà Centre','Gavarra','Sant Ildefons','Can Boixeres','Can Vidalet','Pubilla Cases','Ernest Lluch','Collblanc','Badal','Plaça de Sants','Sants Estació','Entença','Hospital Clínic','Diagonal','Verdaguer','Sagrada Família','Sant Pau | Dos de Maig','Camp de l’Arpa','La Sagrera','Congrés','Maragall','Virrei Amat','Vilapicina','Horta','El Carmel','El Coll | La Teixonera','Vall d’Hebron']},
+ L9N:{name:'L9 Nord',color:'#f28c00',soft:'#f6d5a6',dark:'#b95e00',stations:['La Sagrera','Onze de Setembre','Bon Pastor','Can Peixauet','Santa Rosa','Fondo','Església Major','Singuerlín','Can Zam']},
+ L9S:{name:'L9 Sud',color:'#f28c00',soft:'#f6d5a6',dark:'#b95e00',stations:['Zona Universitària','Collblanc','Torrassa','Can Tries | Gornal','Europa | Fira','Fira','Parc Logístic','Mercabarna','Les Moreres','El Prat Estació','Cèntric','Parc Nou','Mas Blau','Aeroport T2','Aeroport T1']},
+ L10N:{name:'L10 Nord',color:'#00a6d6',soft:'#b6e5f2',dark:'#007da5',stations:['La Sagrera','Onze de Setembre','Bon Pastor','Llefià','La Salut','Gorg']},
+ L10S:{name:'L10 Sud',color:'#00a6d6',soft:'#b6e5f2',dark:'#007da5',stations:['ZAL | Riu Vell','Ecoparc','Port Comercial | La Factoria','Zona Franca','Foc','Foneria','Ciutat de la Justícia','Provençana','Can Tries | Gornal','Torrassa','Collblanc']},
+ L11:{name:'L11',color:'#9acb3c',soft:'#dcebb7',dark:'#628a18',stations:['Trinitat Nova','Casa de l’Aigua','Torre Baró | Vallbona','Ciutat Meridiana','Can Cuiàs']}
+};
+// Coordenades esquemàtiques dibuixades a partir del plànol oficial de la xarxa de TMB.
+// Són coordenades de presentació, no coordenades geogràfiques.
+const networkCoords={
+// Coordenades traçades visualment a partir del plànol oficial de TMB (mapa 2026).
+// El mapa continua sent SVG interactiu: les línies i els nodes s'hi dibuixen per separat.
+'Hospital de Bellvitge':[94,386],'Bellvitge':[151,367],'Av. Carrilet':[174,350],'Rambla Just Oliveras':[211,331],'Can Serra':[232,314],'Florida':[256,300],'Torrassa':[278,319],'Santa Eulàlia':[297,335],'Mercat Nou':[322,337],'Plaça de Sants':[343,337],'Hostafrancs':[363,338],'Espanya':[390,363],'Rocafort':[425,363],'Urgell':[455,363],'Universitat':[482,363],'Catalunya':[500,365],'Urquinaona':[520,386],'Arc de Triomf':[548,367],'Marina':[582,365],'Glòries':[612,362],'Clot':[652,360],'Navas':[677,340],'La Sagrera':[703,324],'Fabra i Puig':[738,300],'Sant Andreu':[780,275],'Torras i Bages':[811,252],'Trinitat Vella':[835,231],'Baró de Viver':[862,217],'Santa Coloma':[888,224],'Fondo':[906,240],
+'Cornellà Centre':[148,279],'Gavarra':[176,282],'Sant Ildefons':[202,286],'Can Boixeres':[226,290],'Can Vidalet':[249,292],'Pubilla Cases':[274,292],'Ernest Lluch':[297,291],'Can Tries | Gornal':[299,340],'Provençana':[321,373],'Ciutat de la Justícia':[344,394],'Foneria':[365,414],'Foc':[385,436],'Zona Franca':[405,456],'Port Comercial | La Factoria':[425,477],'Ecoparc':[423,493],'ZAL | Riu Vell':[420,514],
+'Paral·lel':[448,454],'Sant Antoni':[462,415],'Passeig de Gràcia':[530,353],'Tetuan':[553,340],'Monumental':[575,326],'Sagrada Família':[596,309],'Encants':[622,326],'Bac de Roda':[680,337],'Sant Martí':[710,339],'La Pau':[758,356],'Verneda':[789,355],'Artigues | Sant Adrià':[820,357],'Sant Roc':[853,365],'Gorg':[884,382],'Pep Ventura':[915,383],'Badalona Pompeu Fabra':[936,380],
+'Zona Universitària':[345,117],'Palau Reial':[346,143],'Maria Cristina':[347,168],'Les Corts':[354,193],'Plaça del Centre':[368,217],'Sants Estació':[392,240],'Tarragona':[404,269],'Poble Sec':[425,399],'Drassanes':[446,423],'Liceu':[472,399],'Diagonal':[508,323],'Fontana':[493,236],'Lesseps':[500,214],'Vallcarca':[516,194],'Penitents':[542,172],'Vall d’Hebron':[567,148],'Montbau':[600,128],'Mundet':[626,124],'Valldaura':[660,139],'Canyelles':[704,151],'Roquetes':[748,165],'Trinitat Nova':[811,190],
+'Besòs':[759,390],'Besòs Mar':[757,413],'El Maresme | Fòrum':[755,433],'Selva de Mar':[729,437],'Poblenou':[698,437],'Llacuna':[671,438],'Bogatell':[645,438],'Ciutadella | Vila Olímpica':[617,446],'Barceloneta':[578,464],'Jaume I':[554,426],'Girona':[542,342],'Verdaguer':[565,321],'Joanic':[587,290],'Alfons X':[612,269],'Guinardó | Hospital de Sant Pau':[638,258],'Maragall':[679,281],'Llucmajor':[720,262],'Via Júlia':[755,239],
+'Collblanc':[324,292],'Badal':[349,314],'Entença':[430,329],'Hospital Clínic':[456,330],'Sant Pau | Dos de Maig':[618,298],"Camp de l’Arpa":[650,316],'Congrés':[704,294],'Virrei Amat':[705,270],'Vilapicina':[718,249],'Horta':[738,224],'El Carmel':[686,191],'El Coll | La Teixonera':[644,172],
+'Onze de Setembre':[733,322],'Bon Pastor':[775,322],'Can Peixauet':[842,275],'Santa Rosa':[865,280],'Església Major':[906,205],'Singuerlín':[916,184],'Can Zam':[934,161],
+'Europa | Fira':[270,410],'Fira':[250,429],'Parc Logístic':[230,449],'Mercabarna':[207,469],'Les Moreres':[183,489],'El Prat Estació':[165,511],'Cèntric':[157,532],'Parc Nou':[149,548],'Mas Blau':[140,566],'Aeroport T2':[130,580],'Aeroport T1':[145,597],
+'Llefià':[808,342],'La Salut':[835,357],
+'Casa de l’Aigua':[821,210],'Torre Baró | Vallbona':[835,232],'Ciutat Meridiana':[858,207],'Can Cuiàs':[888,122]
+};
+// Coordenades normalitzades traçades visualment sobre el plànol TMB adjunt.
+// Cada línia utilitza aquests punts com a àncores compartides als intercanvis.
+// IMPORTANT: no aplicar una segona transformació global a aquestes coordenades.
+// Correcció de les àncores principals a partir dels centres d'estació visibles al plànol adjunt.
+// Coordenades en el viewBox 1000 × 620; els intercanvis reutilitzen exactament el mateix punt.
+Object.assign(networkCoords, {
+ // L1: eix Hospital de Bellvitge–Fondo
+ 'Hospital de Bellvitge':[154,394], 'Bellvitge':[194,371], 'Av. Carrilet':[193,345],
+ 'Rambla Just Oliveras':[220,319], 'Can Serra':[223,307], 'Florida':[260,281],
+ 'Torrassa':[282,308], 'Santa Eulàlia':[300,324], 'Mercat Nou':[320,336],
+ 'Plaça de Sants':[344,338], 'Hostafrancs':[361,341], 'Sants Estació':[393,421], 'Espanya':[393,421],
+ 'Rocafort':[420,423], 'Urgell':[444,422], 'Universitat':[471,421], 'Catalunya':[499,428],
+ 'Urquinaona':[530,462], 'Arc de Triomf':[560,461], 'Marina':[589,462], 'Glòries':[640,426],
+ 'Clot':[667,403], 'Navas':[690,386], 'La Sagrera':[706,360], 'Fabra i Puig':[737,347],
+ 'Sant Andreu':[759,324], 'Torras i Bages':[782,303], 'Trinitat Vella':[794,276],
+ 'Baró de Viver':[828,259], 'Santa Coloma':[856,281], 'Fondo':[906,281],
+ // Intercanvis centrals compartits entre línies
+ 'Cornellà Centre':[171,321], 'Gavarra':[195,321], 'Sant Ildefons':[217,321], 'Can Boixeres':[238,321],
+ 'Can Vidalet':[259,321], 'Pubilla Cases':[278,321], 'Ernest Lluch':[302,321],
+ 'Collblanc':[307,294], 'Badal':[329,321], 'Sants Estació':[344,338], 'Entença':[414,338],
+ 'Hospital Clínic':[436,338], 'Diagonal':[499,318], 'Verdaguer':[559,301],
+ 'Sagrada Família':[591,316], 'Sant Pau | Dos de Maig':[618,292], 'Camp de l’Arpa':[643,310],
+ 'Congrés':[671,354], 'Maragall':[679,375], 'Virrei Amat':[686,261], 'Vilapicina':[699,244],
+ 'Horta':[713,228], 'El Carmel':[688,208], 'El Coll | La Teixonera':[666,186],
+ 'Vall d’Hebron':[626,174], 'Zona Universitària':[282,149], 'Palau Reial':[302,170],
+ 'Maria Cristina':[322,190], 'Les Corts':[340,210], 'Plaça del Centre':[355,232],
+ 'Tarragona':[392,421], 'Poble Sec':[397,448], 'Paral·lel':[408,472], 'Drassanes':[434,472],
+ 'Liceu':[457,439], 'Passeig de Gràcia':[499,318], 'Fontana':[521,173], 'Lesseps':[542,151],
+ 'Vallcarca':[558,133], 'Penitents':[578,116], 'Montbau':[604,104], 'Mundet':[631,104],
+ 'Valldaura':[658,119], 'Canyelles':[687,132], 'Roquetes':[716,153], 'Trinitat Nova':[746,169],
+ 'Tetuan':[530,423], 'Monumental':[557,399], 'Encants':[579,418], 'Bac de Roda':[700,375],
+ 'Sant Martí':[728,375], 'La Pau':[759,373], 'Verneda':[784,373], 'Artigues | Sant Adrià':[811,373],
+ 'Sant Roc':[839,382], 'Gorg':[866,397], 'Pep Ventura':[892,397], 'Badalona Pompeu Fabra':[917,397],
+ 'Besòs':[761,424], 'Besòs Mar':[761,447], 'El Maresme | Fòrum':[748,463], 'Selva de Mar':[723,467],
+ 'Poblenou':[697,467], 'Llacuna':[672,467], 'Bogatell':[650,467], 'Ciutadella | Vila Olímpica':[625,475],
+ 'Barceloneta':[593,492], 'Jaume I':[560,459], 'Girona':[533,423], 'Joanic':[574,256],
+ 'Alfons X':[599,239], 'Guinardó | Hospital de Sant Pau':[621,226], 'Llucmajor':[688,211], 'Via Júlia':[718,191],
+ 'Onze de Setembre':[706,386], 'Bon Pastor':[735,386], 'Can Peixauet':[857,258], 'Santa Rosa':[875,265],
+ 'Església Major':[906,227], 'Singuerlín':[906,204], 'Can Zam':[906,180], 'Llefià':[811,367], 'La Salut':[838,382],
+ 'Casa de l’Aigua':[814,193], 'Torre Baró | Vallbona':[811,170], 'Ciutat Meridiana':[814,144], 'Can Cuiàs':[814,120],
+ 'Europa | Fira':[263,405], 'Fira':[263,427], 'Parc Logístic':[263,449], 'Mercabarna':[263,470],
+ 'Les Moreres':[263,492], 'El Prat Estació':[263,515], 'Cèntric':[263,537], 'Parc Nou':[263,559],
+ 'Mas Blau':[263,581], 'Aeroport T2':[263,601], 'Aeroport T1':[282,601],
+ 'Can Tries | Gornal':[302,324], 'Provençana':[323,351], 'Ciutat de la Justícia':[323,374],
+ 'Foneria':[323,397], 'Foc':[323,420], 'Zona Franca':[323,443], 'Port Comercial | La Factoria':[323,466],
+ 'Ecoparc':[323,489], 'ZAL | Riu Vell':[323,512]
+});
+// Ajust final de les àncores centrals a partir de la imatge TMB adjuntada.
+// Les coordenades es mantenen compartides per als intercanvis.
+Object.assign(networkCoords, {
+ // Eix L1 i la seva continuació pel centre de Barcelona
+ 'Hospital de Bellvitge':[155,394], 'Bellvitge':[194,377], 'Av. Carrilet':[194,355],
+ 'Rambla Just Oliveras':[220,329], 'Can Serra':[220,321], 'Florida':[252,298],
+ 'Torrassa':[273,320], 'Santa Eulàlia':[292,334], 'Mercat Nou':[308,348],
+ 'Plaça de Sants':[329,349], 'Hostafrancs':[343,352], 'Espanya':[390,421],
+ 'Rocafort':[415,421], 'Urgell':[435,421], 'Universitat':[462,421], 'Catalunya':[494,435],
+ 'Urquinaona':[530,457], 'Arc de Triomf':[561,457], 'Marina':[589,466], 'Glòries':[622,426],
+ 'Clot':[658,407], 'Navas':[689,388], 'La Sagrera':[705,370], 'Fabra i Puig':[733,349],
+ 'Sant Andreu':[761,325], 'Torras i Bages':[781,307], 'Trinitat Vella':[790,284],
+ 'Baró de Viver':[816,270], 'Santa Coloma':[842,277], 'Fondo':[905,278],
+ // L3: diagonal sud-oest, centre i arc nord
+ 'Zona Universitària':[282,151], 'Palau Reial':[306,170], 'Maria Cristina':[324,190],
+ 'Les Corts':[340,210], 'Plaça del Centre':[355,232], 'Sants Estació':[377,253],
+ 'Tarragona':[382,405], 'Poble Sec':[397,448], 'Paral·lel':[408,472], 'Drassanes':[434,472],
+ 'Liceu':[457,439], 'Catalunya':[494,435], 'Passeig de Gràcia':[499,318], 'Diagonal':[499,318],
+ 'Fontana':[521,173], 'Lesseps':[542,151], 'Vallcarca':[558,133], 'Penitents':[578,116],
+ 'Vall d’Hebron':[626,174], 'Montbau':[604,104], 'Mundet':[631,104], 'Valldaura':[658,119],
+ 'Canyelles':[687,132], 'Roquetes':[716,153], 'Trinitat Nova':[746,169],
+ // L5: Cornellà, Sants, Eixample i túnel de la Vall d'Hebron
+ 'Cornellà Centre':[215,322], 'Gavarra':[236,323], 'Sant Ildefons':[257,325],
+ 'Can Boixeres':[277,327], 'Can Vidalet':[298,329], 'Pubilla Cases':[318,330],
+ 'Ernest Lluch':[338,331], 'Collblanc':[307,294], 'Badal':[329,321], 'Entença':[414,338],
+ 'Hospital Clínic':[436,338], 'Verdaguer':[559,301], 'Sagrada Família':[591,316],
+ 'Sant Pau | Dos de Maig':[618,292], 'Camp de l’Arpa':[643,310], 'Congrés':[671,354],
+ 'Maragall':[679,375], 'Virrei Amat':[686,261], 'Vilapicina':[699,244], 'Horta':[713,228],
+ 'El Carmel':[688,208], 'El Coll | La Teixonera':[666,186],
+ // L2 central i façana litoral
+ 'Paral·lel':[408,472], 'Sant Antoni':[462,421], 'Passeig de Gràcia':[499,318], 'Tetuan':[530,423],
+ 'Monumental':[557,399], 'Sagrada Família':[591,316], 'Encants':[579,418], 'Clot':[658,407],
+ 'Bac de Roda':[700,375], 'Sant Martí':[728,375], 'La Pau':[759,373], 'Verneda':[784,373],
+ 'Artigues | Sant Adrià':[811,373], 'Sant Roc':[839,382], 'Gorg':[866,397], 'Pep Ventura':[892,397],
+ 'Badalona Pompeu Fabra':[917,397],
+ // L4: litoral i arc nord-est
+ 'Besòs':[761,424], 'Besòs Mar':[761,447], 'El Maresme | Fòrum':[748,463], 'Selva de Mar':[723,467],
+ 'Poblenou':[697,467], 'Llacuna':[672,467], 'Bogatell':[650,467], 'Ciutadella | Vila Olímpica':[625,475],
+ 'Barceloneta':[593,492], 'Jaume I':[560,459], 'Girona':[533,423], 'Joanic':[574,256], 'Alfons X':[599,239],
+ 'Guinardó | Hospital de Sant Pau':[621,226], 'Llucmajor':[688,211], 'Via Júlia':[718,191],
+ // Correcció d'ancoratges compartits revisada contra el plànol original adjunt.
+ // Sants Estació és el nus de L3/L5 i ha d'estar al sud-oest del centre, no al nivell de Plaça de Sants.
+ 'Sants Estació':[377,358], 'Tarragona':[382,390], 'Entença':[414,365], 'Hospital Clínic':[436,365],
+ // L9 / L10 i L11: ramals nord i sud
+ 'Onze de Setembre':[706,386], 'Bon Pastor':[735,386], 'Can Peixauet':[857,258], 'Santa Rosa':[875,265],
+ 'Església Major':[906,227], 'Singuerlín':[906,204], 'Can Zam':[906,180], 'Llefià':[811,367], 'La Salut':[838,382],
+ 'Casa de l’Aigua':[814,193], 'Torre Baró | Vallbona':[811,170], 'Ciutat Meridiana':[814,144], 'Can Cuiàs':[814,120],
+ 'Europa | Fira':[284,405], 'Fira':[284,427], 'Parc Logístic':[284,449], 'Mercabarna':[284,470],
+ 'Les Moreres':[284,492], 'El Prat Estació':[284,515], 'Cèntric':[284,537], 'Parc Nou':[284,559],
+ 'Mas Blau':[284,581], 'Aeroport T2':[284,601], 'Aeroport T1':[302,601],
+ 'Can Tries | Gornal':[302,324], 'Provençana':[323,351], 'Ciutat de la Justícia':[323,374],
+ 'Foneria':[323,397], 'Foc':[323,420], 'Zona Franca':[323,443], 'Port Comercial | La Factoria':[323,466],
+ 'Ecoparc':[323,489], 'ZAL | Riu Vell':[323,512]
+});
+// Recalibratge de les àncores directament sobre la imatge oficial adjunta (1456 × 1024 px).
+// La funció converteix punts llegits de la imatge al viewBox SVG 1000 × 620; l’escala vertical manté l’aeroport dins del mapa.
+// Transformació ajustada als límits reals de la zona de xarxa del plànol adjunt (imatge 1456×1024):
+// x≈80..1400 i y≈80..890. Això utilitza gairebé tot el viewBox sense deformar l'escala horitzontal/vertical.
+const fromOfficial=(x,y)=>[(x-80)*1000/1320, (y-80)*620/810];
+const officialPixels={
+// L1: Hospital de Bellvitge → Fondo
+'Hospital de Bellvitge':[224,565],'Bellvitge':[282,539],'Av. Carrilet':[282,508],'Rambla Just Oliveras':[319,471],'Can Serra':[324,457],'Florida':[365,426],'Torrassa':[406,458],'Santa Eulàlia':[428,470],'Mercat Nou':[448,497],'Plaça de Sants':[476,500],'Hostafrancs':[506,505],'Espanya':[574,606],'Rocafort':[625,604],'Urgell':[657,604],'Universitat':[690,604],'Catalunya':[726,610],'Urquinaona':[770,650],'Arc de Triomf':[817,650],'Marina':[860,650],'Glòries':[931,609],'Clot':[976,579],'Navas':[1018,550],'La Sagrera':[1028,526],'Fabra i Puig':[1078,500],'Sant Andreu':[1120,470],'Torras i Bages':[1151,454],'Trinitat Vella':[1164,420],'Baró de Viver':[1210,400],'Santa Coloma':[1250,398],'Fondo':[1317,397],
+// L5, corredor de Cornellà a Vall d'Hebron
+'Cornellà Centre':[412,370],'Gavarra':[440,372],'Sant Ildefons':[466,374],'Can Boixeres':[490,377],'Can Vidalet':[516,380],'Pubilla Cases':[542,382],'Ernest Lluch':[568,374],'Collblanc':[447,426],'Badal':[476,470],'Sants Estació':[575,502],'Entença':[636,503],'Hospital Clínic':[675,503],'Diagonal':[732,502],'Verdaguer':[802,495],'Sagrada Família':[831,478],'Sant Pau | Dos de Maig':[865,496],'Camp de l’Arpa':[903,513],'La Sagrera':[1028,526],'Congrés':[954,541],'Maragall':[976,553],'Virrei Amat':[1019,482],'Vilapicina':[1041,457],'Horta':[1073,428],'El Carmel':[1038,392],'El Coll | La Teixonera':[1000,367],'Vall d’Hebron':[830,245],
+// L3: Zona Universitària, centre i arc nord
+'Zona Universitària':[504,261],'Palau Reial':[531,276],'Maria Cristina':[552,301],'Les Corts':[573,324],'Plaça del Centre':[590,347],'Tarragona':[612,590],'Poble Sec':[647,680],'Paral·lel':[650,711],'Drassanes':[676,680],'Liceu':[703,649],'Passeig de Gràcia':[732,502],'Fontana':[753,405],'Lesseps':[760,377],'Vallcarca':[768,350],'Penitents':[793,328],'Montbau':[827,206],'Mundet':[854,204],'Valldaura':[887,218],'Canyelles':[931,230],'Roquetes':[974,262],'Trinitat Nova':[1023,291],
+// L2 i centre
+'Sant Antoni':[689,650],'Tetuan':[782,628],'Monumental':[808,606],'Encants':[839,625],'Clot':[976,579],'Bac de Roda':[1041,542],'Sant Martí':[1080,541],'La Pau':[1108,542],'Verneda':[1139,542],'Artigues | Sant Adrià':[1178,545],'Sant Roc':[1217,554],'Gorg':[1267,574],'Pep Ventura':[1300,575],'Badalona Pompeu Fabra':[1340,574],
+// L4: litoral i arc nord-est
+'Besòs':[1107,608],'Besòs Mar':[1107,640],'El Maresme | Fòrum':[1076,663],'Selva de Mar':[1045,667],'Poblenou':[1010,667],'Llacuna':[978,667],'Bogatell':[947,667],'Ciutadella | Vila Olímpica':[913,677],'Barceloneta':[858,706],'Jaume I':[819,654],'Girona':[774,628],'Joanic':[832,401],'Alfons X':[856,379],'Guinardó | Hospital de Sant Pau':[882,361],'Llucmajor':[1050,330],'Via Júlia':[1084,309],
+// L9/L10: ramal nord i sud
+'Onze de Setembre':[1027,551],'Bon Pastor':[1073,551],'Can Peixauet':[1250,370],'Santa Rosa':[1280,376],'Església Major':[1317,352],'Singuerlín':[1317,327],'Can Zam':[1317,293],'Llefià':[1200,540],'La Salut':[1234,553],'Casa de l’Aigua':[1179,241],'Torre Baró | Vallbona':[1182,220],'Ciutat Meridiana':[1205,191],'Can Cuiàs':[1205,151],
+// L9 Sud i L10 Sud: aeroport i Zona Franca
+'Europa | Fira':[446,605],'Fira':[443,637],'Parc Logístic':[442,671],'Mercabarna':[442,702],'Les Moreres':[442,735],'El Prat Estació':[443,767],'Cèntric':[443,800],'Parc Nou':[443,826],'Mas Blau':[443,846],'Aeroport T2':[443,872],'Aeroport T1':[474,872],'Can Tries | Gornal':[322,470],'Provençana':[350,506],'Ciutat de la Justícia':[375,536],'Foneria':[398,567],'Foc':[421,600],'Zona Franca':[443,633],'Port Comercial | La Factoria':[443,668],'Ecoparc':[443,704],'ZAL | Riu Vell':[443,737]
+};
+Object.entries(officialPixels).forEach(([name,pt])=>networkCoords[name]=fromOfficial(pt[0],pt[1]));
+// Correccions de lectura del plànol: alguns punts del tram sud de la L3 havien quedat amb la coordenada vertical del centre en lloc de la del litoral.
+Object.assign(networkCoords,{ 'Tarragona':fromOfficial(612,590), 'Poble Sec':fromOfficial(647,680), 'Paral·lel':fromOfficial(650,711), 'Drassanes':fromOfficial(676,680), 'Liceu':fromOfficial(703,649), 'Espanya':fromOfficial(574,606), 'Catalunya':fromOfficial(726,610), 'Sants Estació':fromOfficial(575,502) });
+// Correcció cartogràfica d'intercanvis que no comparteixen el mateix punt visual:
+// Passeig de Gràcia és al centre-est, mentre que Diagonal queda més al nord.
+// Les coordenades següents provenen de la lectura del plànol oficial adjunt.
+Object.assign(networkCoords, {
+ 'Passeig de Gràcia':fromOfficial(741,594),
+ 'Diagonal':fromOfficial(732,504),
+ 'Universitat':fromOfficial(700,602),
+ 'Catalunya':fromOfficial(727,611),
+ 'Urquinaona':fromOfficial(770,650),
+ 'Girona':fromOfficial(772,595),
+ 'Tetuan':fromOfficial(782,625),
+ 'Monumental':fromOfficial(807,604),
+ 'Sagrada Família':fromOfficial(831,480),
+ 'Encants':fromOfficial(858,508),
+ 'Verdaguer':fromOfficial(801,495),
+ 'Jaume I':fromOfficial(819,653),
+ 'Arc de Triomf':fromOfficial(817,650),
+ 'Marina':fromOfficial(861,650),
+ 'Glòries':fromOfficial(931,609),
+ 'Clot':fromOfficial(976,579),
+ 'La Sagrera':fromOfficial(1028,526),
+ 'Trinitat Nova':fromOfficial(1023,291),
+ 'Llucmajor':fromOfficial(1050,330),
+ 'Via Júlia':fromOfficial(1084,309),
+ 'Lesseps':fromOfficial(760,377),
+ 'Vallcarca':fromOfficial(768,350),
+ 'Penitents':fromOfficial(793,328),
+ 'Vall d’Hebron':fromOfficial(830,245),
+ 'Can Zam':fromOfficial(1317,293),
+ 'Can Cuiàs':fromOfficial(1205,151)
+});
+const labels={pending:'Pendent de visitar',passed:'Hi he passat amb tren',visited:"Hi he pujat o n'he baixat"};
+const validStatuses=new Set(Object.keys(labels));
+const route=document.getElementById('route'),stationSelect=document.getElementById('station-select'),statusSelect=document.getElementById('status-select'),saveRow=document.getElementById('save-row');
+let currentLine='L1',selectedIndex=0,saveError=false,lastSavedAt=null;
+const data={};
+Object.keys(lines).forEach(id=>data[id]={statuses:lines[id].stations.map(()=> 'pending'),updatedAt:null});
+let stationButtons=[];
+const current=()=>lines[currentLine];
+const currentData=()=>data[currentLine];
+function formatDate(date){return new Intl.DateTimeFormat('ca-ES',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(date)}
+function setSaveIndicator(state,date=lastSavedAt){saveRow.classList.toggle('error',state==='error');const icon=document.getElementById('save-icon'),title=document.getElementById('save-title'),time=document.getElementById('save-time');if(state==='error'){icon.textContent='!';title.textContent='Error en desar les dades';time.textContent='Els canvis no s’han pogut confirmar com a desats. Exporta una còpia o comprova l’espai disponible del navegador.';saveError=true}else if(state==='loading'){icon.textContent='…';title.textContent='Desant les dades…';time.textContent=date?`Últim desament correcte: ${formatDate(date)}`:'Encara no s’ha confirmat cap desament.';saveError=false}else{icon.textContent='✓';title.textContent='Dades desades';time.textContent=date?`Últim desament correcte: ${formatDate(date)}`:'Encara no s’ha fet cap canvi.';saveError=false}}
+function setTheme(){
+ const line=current();
+ document.documentElement.style.setProperty('--red',line.color);
+ document.documentElement.style.setProperty('--line-soft',line.soft);
+ document.documentElement.style.setProperty('--red-dark',line.dark);
+ document.querySelector('meta[name="theme-color"]').setAttribute('content',line.color);
+ document.getElementById('topbar').style.background=line.color;
+ const highContrastText=currentLine==='L4';
+ document.getElementById('topbar').style.color=highContrastText?'#242424':'#fff';
+ document.getElementById('line-badge').style.borderColor=highContrastText?'#242424':'#fff';
+ document.getElementById('line-badge').textContent=currentLine;
+ document.getElementById('line-badge').setAttribute('aria-label',`Línia ${currentLine.slice(1)}`);
+ document.getElementById('page-title').textContent=`El meu registre de la ${currentLine}`;
+ document.getElementById('map-title').textContent='Esquema de la línia';
+ document.getElementById('map-description').textContent='Selecciona una estació per consultar-ne o canviar-ne l’estat.';
+ document.getElementById('stats-line').textContent=currentLine;
+ document.getElementById('station-total').textContent=`${line.stations.length} estacions`;
+ document.getElementById('progress-note').textContent='Cada estació visitada val el 100%; cada estació travessada val el 50%.';
+ document.querySelectorAll('.line-tab').forEach(button=>{
+  const active=button.dataset.line===currentLine;
+  button.setAttribute('aria-pressed',String(active));
+  button.style.background=active?line.color:'#fff';
+  button.style.borderColor=active?line.color:'var(--line)';
+  button.style.color=active?(currentLine!=='L4'?'#fff':'#242424'):'var(--ink)';
+ });
+}
+function selectStation(index,scrollIntoView){selectedIndex=index;stationSelect.value=String(index);statusSelect.value=currentData().statuses[index];stationButtons.forEach((button,i)=>{const selected=i===index;button.classList.toggle('selected',selected);if(selected)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current')});document.getElementById('status-current').textContent=labels[currentData().statuses[index]];document.getElementById('mini-dot').dataset.status=currentData().statuses[index];if(scrollIntoView)stationButtons[index].scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'})}
+function buildRoute(){route.replaceChildren();stationSelect.replaceChildren();stationButtons=[];current().stations.forEach((name,index)=>{const li=document.createElement('li'),button=document.createElement('button');button.type='button';button.className='station';button.dataset.index=String(index);button.dataset.status=currentData().statuses[index];button.setAttribute('aria-label',`${name}: ${labels[currentData().statuses[index]]}`);button.innerHTML='<span class="dot" aria-hidden="true"></span><span class="name"></span>';button.querySelector('.name').textContent=name;button.addEventListener('click',()=>selectStation(index,true));li.appendChild(button);route.appendChild(li);stationButtons.push(button);const option=document.createElement('option');option.value=String(index);option.textContent=name;stationSelect.appendChild(option)});for(let i=0;i<stationButtons.length-1;i++){const segment=document.createElement('span');segment.className='route-segment';segment.dataset.index=String(i);segment.setAttribute('aria-hidden','true');route.firstElementChild.appendChild(segment)}updateRouteSegments()}
+function updateRouteSegments(){const routeRect=route.getBoundingClientRect();route.querySelectorAll('.route-segment').forEach(segment=>{const i=Number(segment.dataset.index),first=stationButtons[i],second=stationButtons[i+1];if(!first||!second)return;const a=first.querySelector('.dot').getBoundingClientRect(),b=second.querySelector('.dot').getBoundingClientRect();const start=(a.top+a.height/2)-routeRect.top,end=(b.top+b.height/2)-routeRect.top;segment.style.top=`${start}px`;segment.style.height=`${Math.max(0,end-start)}px`;const statuses=currentData().statuses;segment.style.display=statuses[i]!=='pending'&&statuses[i+1]!=='pending'?'block':'none'})}
+function render(){
+ let visited=0,passed=0,pending=0,points=0;currentData().statuses.forEach((status,index)=>{const button=stationButtons[index];button.dataset.status=status;button.setAttribute('aria-label',`${current().stations[index]}: ${labels[status]}`);if(status==='visited'){visited++;points+=1}else if(status==='passed'){passed++;points+=.5}else pending++});document.getElementById('visited-count').textContent=visited;document.getElementById('passed-count').textContent=passed;document.getElementById('pending-count').textContent=pending;const percent=Math.round(points/current().stations.length*100);document.getElementById('progress-value').textContent=`${percent}%`;document.getElementById('progress-fill').style.width=`${percent}%`;const progress=document.getElementById('progress-track');progress.setAttribute('aria-valuenow',String(percent));progress.setAttribute('aria-label',`Progrés ponderat de la ${currentLine}`);document.getElementById('progress-note').textContent='Cada estació visitada val el 100%; cada estació travessada val el 50%.';updateRouteSegments();selectStation(selectedIndex,false)
+}
+// Àncores específiques per línia als grans intercanvis: el plànol oficial dibuixa
+// alguns nodes de Passeig de Gràcia/Diagonal en posicions pròximes però diferents
+// segons el corredor. Això evita forçar totes les línies a passar pel mateix punt.
+const lineSpecificPixels={
+ // Ancoratges revisats directament sobre el plànol TMB adjunt. Les coordenades són píxels de la imatge original.
+ L1:{'Plaça de Sants':[476,500],'Hostafrancs':[506,505],'Espanya':[574,606],'Rocafort':[625,604],'Urgell':[657,604],'Universitat':[690,604],'Catalunya':[726,610],'Urquinaona':[770,650],'Arc de Triomf':[817,650],'Marina':[860,650],'Glòries':[931,609],'Clot':[976,579],'Navas':[1018,550],'La Sagrera':[1028,526],'Fabra i Puig':[1078,500],'Sant Andreu':[1120,470],'Torras i Bages':[1151,454],'Trinitat Vella':[1164,420],'Baró de Viver':[1210,400],'Santa Coloma':[1250,398],'Fondo':[1317,397]},
+ L2:{'Paral·lel':[650,711],'Sant Antoni':[704,667],'Universitat':[690,604],'Passeig de Gràcia':[815,637],'Tetuan':[842,624],'Monumental':[883,556],'Sagrada Família':[885,514],'Encants':[922,541],'Clot':[976,579],'Bac de Roda':[1030,552]},
+ L3:{'Plaça del Centre':[592,480],'Sants Estació':[575,502],'Tarragona':[612,590],'Espanya':[574,606],'Poble Sec':[647,680],'Paral·lel':[650,711],'Drassanes':[676,680],'Liceu':[703,649],'Catalunya':[726,610],'Passeig de Gràcia':[805,582],'Diagonal':[795,514],'Fontana':[770,354],'Lesseps':[764,320],'Vallcarca':[760,295],'Penitents':[788,276],'Vall d’Hebron':[830,245]},
+ L4:{'Passeig de Gràcia':[815,637],'Girona':[839,602],'Verdaguer':[847,525],'Joanic':[831,414],'Alfons X':[855,385],'Guinardó | Hospital de Sant Pau':[882,365],'Maragall':[976,377],'Llucmajor':[1050,330],'Via Júlia':[1084,309],'Trinitat Nova':[1023,291]},
+ L5:{'Plaça de Sants':[571,503],'Sants Estació':[575,502],'Entença':[636,503],'Hospital Clínic':[675,503],'Diagonal':[795,514],'Verdaguer':[847,525],'Sagrada Família':[885,514],'Sant Pau | Dos de Maig':[925,488],'Camp de l’Arpa':[950,507],'La Sagrera':[1028,526],'El Coll | La Teixonera':[1000,367],'Vall d’Hebron':[830,245]}
+};
+// Compleció d'ancoratges per als trams que abans s'interpolaven en línia recta.
+Object.assign(lineSpecificPixels.L1, {'Hospital de Bellvitge':[224,565],'Bellvitge':[282,539],'Av. Carrilet':[282,508],'Rambla Just Oliveras':[319,471],'Can Serra':[324,457],'Florida':[365,426],'Torrassa':[406,458],'Santa Eulàlia':[428,470],'Mercat Nou':[448,497]});
+Object.assign(lineSpecificPixels.L3, {'Zona Universitària':[504,261],'Palau Reial':[531,276],'Maria Cristina':[552,301],'Les Corts':[573,324],'Plaça del Centre':[590,347],'Sants Estació':[575,502],'Tarragona':[612,590],'Espanya':[574,606],'Poble Sec':[647,680],'Paral·lel':[650,711],'Drassanes':[676,680],'Liceu':[703,649],'Catalunya':[726,610],'Passeig de Gràcia':[805,582],'Diagonal':[795,514],'Fontana':[753,405],'Lesseps':[760,377],'Vallcarca':[768,350],'Penitents':[793,328],'Vall d’Hebron':[830,245],'Montbau':[827,206],'Mundet':[854,204],'Valldaura':[887,218],'Canyelles':[931,230],'Roquetes':[974,262],'Trinitat Nova':[1023,291]});
+Object.assign(lineSpecificPixels.L5, {'Cornellà Centre':[412,370],'Gavarra':[440,372],'Sant Ildefons':[466,374],'Can Boixeres':[490,377],'Can Vidalet':[516,380],'Pubilla Cases':[542,382],'Ernest Lluch':[568,374],'Collblanc':[447,426],'Badal':[476,470],'Plaça de Sants':[571,503],'Sants Estació':[575,502],'Entença':[636,503],'Hospital Clínic':[675,503],'Diagonal':[795,514],'Verdaguer':[847,525],'Sagrada Família':[885,514],'Sant Pau | Dos de Maig':[925,488],'Camp de l’Arpa':[950,507],'La Sagrera':[1028,526],'Congrés':[954,541],'Maragall':[976,553],'Virrei Amat':[1019,482],'Vilapicina':[1041,457],'Horta':[1073,428],'El Carmel':[1038,392],'El Coll | La Teixonera':[1000,367],'Vall d’Hebron':[830,245]});
+// Correcció del ramal sud-oest llegida directament del fitxer original adjunt (1536 × 1114 px).
+// Les coordenades anteriors situaven l'aeroport massa a l'est i el corredor de Zona Franca massa al centre.
+Object.assign(lineSpecificPixels.L9S, {
+ 'Zona Universitària':[504,261], 'Collblanc':[447,426], 'Torrassa':[406,458], 'Can Tries | Gornal':[420,556],
+ 'Europa | Fira':[414,602], 'Fira':[390,641], 'Parc Logístic':[390,674], 'Mercabarna':[332,707],
+ 'Les Moreres':[276,707], 'El Prat Estació':[223,647], 'Cèntric':[223,674], 'Parc Nou':[223,705],
+ 'Mas Blau':[223,735], 'Aeroport T2':[194,779], 'Aeroport T1':[194,816]
+});
+Object.assign(lineSpecificPixels.L10S, {
+ 'ZAL | Riu Vell':[286,772], 'Ecoparc':[337,742], 'Port Comercial | La Factoria':[390,772],
+ 'Zona Franca':[421,728], 'Foc':[456,685], 'Foneria':[494,651], 'Ciutat de la Justícia':[542,620],
+ 'Provençana':[470,580], 'Can Tries | Gornal':[420,556], 'Torrassa':[406,458], 'Collblanc':[447,426]
+});
+// Ancoratges explícits dels ramals nord. S'evita que la interpolació entre
+// extrems dibuixi diagonals artificials que no existeixen al plànol de TMB.
+Object.assign(lineSpecificPixels.L9N, {
+ 'La Sagrera':[1028,526], 'Onze de Setembre':[1050,518], 'Bon Pastor':[1100,518],
+ 'Can Peixauet':[1210,375], 'Santa Rosa':[1253,382], 'Fondo':[1317,397],
+ 'Església Major':[1317,352], 'Singuerlín':[1317,327], 'Can Zam':[1317,293]
+});
+Object.assign(lineSpecificPixels.L10N, {
+ 'La Sagrera':[1028,526], 'Onze de Setembre':[1050,518], 'Bon Pastor':[1100,518],
+ 'Llefià':[1200,540], 'La Salut':[1234,553], 'Gorg':[1267,574]
+});
+Object.assign(lineSpecificPixels.L11, {
+ 'Trinitat Nova':[1023,291], 'Casa de l’Aigua':[1179,241],
+ 'Torre Baró | Vallbona':[1182,220], 'Ciutat Meridiana':[1205,191], 'Can Cuiàs':[1205,151]
+});
+// Punts compartits exactes als nusos entre els ramals nord.
+Object.assign(lineSpecificPixels.L9N, {'La Sagrera':[1028,526],'Onze de Setembre':[1050,518],'Bon Pastor':[1100,518], 'Can Peixauet':[1210,375], 'Santa Rosa':[1253,382], 'Fondo':[1317,397]});
+Object.assign(lineSpecificPixels.L10N, {'La Sagrera':[1028,526],'Onze de Setembre':[1050,518],'Bon Pastor':[1100,518]});
+// Ancoratges addicionals revisats a partir de la imatge TMB adjunta.
+// Completen els corredors L2 i L4 perquè no depenguin d'interpolacions llargues.
+Object.assign(lineSpecificPixels.L2, {
+ 'Paral·lel':[650,711], 'Sant Antoni':[689,650], 'Universitat':[690,604],
+ 'Passeig de Gràcia':[815,637], 'Tetuan':[842,624], 'Monumental':[883,606],
+ 'Sagrada Família':[885,514], 'Encants':[922,541], 'Clot':[976,579],
+ 'Bac de Roda':[1030,552], 'Sant Martí':[1080,541], 'La Pau':[1108,542],
+ 'Verneda':[1139,542], 'Artigues | Sant Adrià':[1178,545], 'Sant Roc':[1217,554],
+ 'Gorg':[1267,574], 'Pep Ventura':[1300,575], 'Badalona Pompeu Fabra':[1340,574]
+});
+Object.assign(lineSpecificPixels.L4, {
+ 'La Pau':[1108,542], 'Besòs':[1107,608], 'Besòs Mar':[1107,640],
+ 'El Maresme | Fòrum':[1076,663], 'Selva de Mar':[1045,667], 'Poblenou':[1010,667],
+ 'Llacuna':[978,667], 'Bogatell':[947,667], 'Ciutadella | Vila Olímpica':[913,677],
+ 'Barceloneta':[858,706], 'Jaume I':[819,653], 'Urquinaona':[770,650],
+ 'Passeig de Gràcia':[815,637], 'Girona':[839,602], 'Verdaguer':[847,525],
+ 'Joanic':[831,414], 'Alfons X':[855,385], 'Guinardó | Hospital de Sant Pau':[882,361],
+ 'Maragall':[976,377], 'Llucmajor':[1050,330], 'Via Júlia':[1084,309], 'Trinitat Nova':[1023,291]
+});
+// Compleció del corredor sud: punts intermedis que eviten segments diagonals artificials.
+Object.assign(lineSpecificPixels.L9S, {
+ 'Zona Universitària':[504,261], 'Collblanc':[447,426], 'Torrassa':[406,458],
+ 'Can Tries | Gornal':[420,556], 'Europa | Fira':[414,602], 'Fira':[390,641],
+ 'Parc Logístic':[390,674], 'Mercabarna':[332,707], 'Les Moreres':[276,707],
+ 'El Prat Estació':[223,647], 'Cèntric':[223,674], 'Parc Nou':[223,705],
+ 'Mas Blau':[223,735], 'Aeroport T2':[194,779], 'Aeroport T1':[194,816]
+});
+Object.assign(lineSpecificPixels.L10S, {
+ 'ZAL | Riu Vell':[286,772], 'Ecoparc':[337,742], 'Port Comercial | La Factoria':[390,772],
+ 'Zona Franca':[421,728], 'Foc':[456,685], 'Foneria':[494,651],
+ 'Ciutat de la Justícia':[542,620], 'Provençana':[470,580],
+ 'Can Tries | Gornal':[420,556], 'Torrassa':[406,458], 'Collblanc':[447,426]
+});
+// Ajustos finals del corredor central contrastats visualment amb el plànol TMB adjunt.
+// Són coordenades aproximades de píxel de la imatge original; prevalen sobre els
+// ancoratges antics repetits més amunt i eviten els salts verticals artificials.
+Object.assign(lineSpecificPixels.L2, {
+ 'Passeig de Gràcia':[795,510], 'Tetuan':[830,542], 'Monumental':[860,570],
+ 'Sagrada Família':[885,514], 'Encants':[922,541], 'Clot':[976,579]
+});
+Object.assign(lineSpecificPixels.L3, {
+ 'Passeig de Gràcia':[795,514], 'Diagonal':[805,485], 'Fontana':[753,405],
+ 'Lesseps':[760,377], 'Vallcarca':[768,350], 'Penitents':[793,328]
+});
+Object.assign(lineSpecificPixels.L4, {
+ 'Passeig de Gràcia':[795,510], 'Girona':[830,522], 'Verdaguer':[847,495],
+ 'Joanic':[831,414], 'Alfons X':[855,385], 'Guinardó | Hospital de Sant Pau':[882,361]
+});
+// Correcció addicional de la geometria central, contrastada directament amb el plànol adjunt.
+// En la passada anterior, Passeig de Gràcia de L2/L4 quedava massa al nord, i alguns punts
+// de L2 feien un zig-zag vertical inexistent entre Universitat i Sagrada Família.
+Object.assign(lineSpecificPixels.L2, {
+ 'Universitat':[726,604], 'Passeig de Gràcia':[805,604], 'Tetuan':[839,604],
+ 'Monumental':[869,604], 'Sagrada Família':[885,514], 'Encants':[922,541], 'Clot':[976,579]
+});
+Object.assign(lineSpecificPixels.L3, {
+ 'Passeig de Gràcia':[805,580], 'Diagonal':[795,514]
+});
+Object.assign(lineSpecificPixels.L4, {
+ 'Passeig de Gràcia':[805,604], 'Girona':[833,578], 'Verdaguer':[847,525]
+});
+function linePoint(id,name){const pixel=lineSpecificPixels[id]?.[name];if(pixel)return fromOfficial(pixel[0],pixel[1]);const point=networkCoords[name];if(!point)return null;/* Compatibilitat amb ancoratges antics que encara estan en píxels de la imatge original: convertir-los en lloc de deixar-los fora del viewBox. */if(point[0]>1000||point[1]>620||point[0]<0||point[1]<0)return fromOfficial(point[0],point[1]);return point}
+function lineCoordinates(id){
+ const names=lines[id].stations,known=[];names.forEach((name,index)=>{const point=linePoint(id,name);if(point)known.push({index,point})});
+ return names.map((name,index)=>{const exact=linePoint(id,name);if(exact)return exact;let before=null,after=null;for(const a of known){if(a.index<index)before=a;if(a.index>index){after=a;break}}if(before&&after){const t=(index-before.index)/(after.index-before.index);return [before.point[0]+(after.point[0]-before.point[0])*t,before.point[1]+(after.point[1]-before.point[1])*t]}if(after){const next=known.find(a=>a.index>after.index);if(next){const t=(index-after.index)/(next.index-after.index);return [after.point[0]+(next.point[0]-after.point[0])*t,after.point[1]+(next.point[1]-after.point[1])*t]}return after.point}if(before){const prev=[...known].reverse().find(a=>a.index<before.index);if(prev){const t=(index-before.index)/(before.index-prev.index);return [before.point[0]+(before.point[0]-prev.point[0])*t,before.point[1]+(before.point[1]-prev.point[1])*t]}return before.point}return [500,300]})
+}
+function svgEl(tag,attrs={}){const el=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([key,value])=>el.setAttribute(key,String(value)));return el}
+function renderNetworkMap(){
+ const svg=document.getElementById('network-map');svg.replaceChildren();
+ const vw=1000/networkZoom,vh=620/networkZoom;svg.setAttribute('viewBox',`${(1000-vw)/2+networkPanX} ${(620-vh)/2+networkPanY} ${vw} ${vh}`);document.getElementById('network-zoom-level').textContent=`${Math.round(networkZoom*100)}%`;const allCoords={};Object.keys(lines).forEach(id=>allCoords[id]=lineCoordinates(id));
+ // Tots els recorreguts de base es dibuixen primer, en colors pàl·lids.
+ Object.keys(lines).forEach(id=>{const line=lines[id],pts=allCoords[id];svg.appendChild(svgEl('polyline',{points:pts.map(p=>p.join(',')).join(' '),class:'network-base',stroke:line.soft,'stroke-linejoin':'round','stroke-linecap':'round'}));
+  // El tram intens s'alinea exactament amb el segment corresponent del recorregut de base.
+  for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1],sa=data[id].statuses[i],sb=data[id].statuses[i+1];if(sa!=='pending'&&sb!=='pending')svg.appendChild(svgEl('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],class:'network-progress',stroke:line.color}))}
+ });
+ // Estacions per damunt dels traçats.
+ Object.keys(lines).forEach(id=>{const line=lines[id],pts=allCoords[id],statuses=data[id].statuses;pts.forEach((pt,i)=>{const status=statuses[i],r=3.1/networkZoom;let fill='#fff';if(status==='visited'||status==='passed')fill=line.color;svg.appendChild(svgEl('circle',{cx:pt[0],cy:pt[1],r,fill,stroke:line.color,'stroke-width':1.5/networkZoom,class:'network-station'}));if(status==='passed')svg.appendChild(svgEl('circle',{cx:pt[0],cy:pt[1],r:1.05/networkZoom,fill:'#fff',stroke:'none'}))})});
+ // Cartellets amb el codi de línia als dos extrems de cada traçat.
+ Object.keys(lines).forEach(id=>{const line=lines[id],pts=allCoords[id];[[pts[0],0],[pts[pts.length-1],1]].forEach(([pt,endIndex])=>{const g=svgEl('g',{'aria-label':`${id}, extrem ${endIndex===0?'inicial':'final'}`});const w=(id.length>3?34:27)/networkZoom,h=16/networkZoom;let x=pt[0]+(endIndex===0?-w-6:6),y=pt[1]-h/2;if(x<2)x=pt[0]+6;if(x+w>998)x=pt[0]-w-6;if(y<2)y=2;if(y+h>618)y=618-h;g.appendChild(svgEl('rect',{x,y,width:w,height:h,rx:4,fill:line.color,class:'network-end-badge'}));const t=svgEl('text',{x:x+w/2,y:y+h/2,class:'network-end-label','font-size':10/networkZoom});t.textContent=id;g.appendChild(t);svg.appendChild(g)})});
+ // Cada nom es mostra una vegada. Es trien posicions alternatives per reduir solapaments.
+ const labelled=new Set(),labelBoxes=[];
+ // Cachegem tots els punts una sola vegada: el càlcul de col·lisions de les etiquetes
+ // s'executava repetidament per a cada posició candidata i alentia el mapa en mòbils.
+ const allStationPoints=Object.values(allCoords).flat();
+ const labelOffsets=[[0,-9,'middle'],[0,13,'middle'],[10,-2,'start'],[-10,-2,'end'],[10,10,'start'],[-10,10,'end'],[0,-16,'middle'],[0,20,'middle']];
+ Object.keys(lines).forEach(id=>{const pts=allCoords[id];pts.forEach((pt,i)=>{
+  const name=lines[id].stations[i];if(labelled.has(name))return;labelled.add(name);
+  const px=pt[0]*networkZoom,py=pt[1]*networkZoom,fs=8,estW=Math.max(12,name.length*4.15),estH=9;
+  let best=null,bestScore=Infinity;
+  labelOffsets.forEach(([ox,oy,anchor],rank)=>{
+   const cx=px+ox,cy=py+oy, left=anchor==='middle'?cx-estW/2:anchor==='end'?cx-estW:cx, right=left+estW, top=cy-estH/2,bottom=cy+estH/2;
+   let score=rank*.01;
+   for(const b of labelBoxes){const overlap=Math.max(0,Math.min(right,b.r)-Math.max(left,b.l))*Math.max(0,Math.min(bottom,b.b)-Math.max(top,b.t));score+=overlap*3}
+   for(const other of allStationPoints){const dx=other[0]*networkZoom-cx,dy=other[1]*networkZoom-cy;if(Math.abs(dx)<estW*.45&&Math.abs(dy)<8)score+=5}
+   if(left<0||right>1000*networkZoom||top<0||bottom>620*networkZoom)score+=20;
+   if(score<bestScore){bestScore=score;best={x:cx/networkZoom,y:cy/networkZoom,anchor,left,right,top,bottom}}
+  });
+  labelBoxes.push({l:best.left,r:best.right,t:best.top,b:best.bottom});
+  const text=svgEl('text',{x:best.x,y:best.y,'text-anchor':best.anchor,class:'network-station-label','font-size':fs/networkZoom});text.textContent=name;svg.appendChild(text);
+ })});
+ const key=document.getElementById('network-key');key.replaceChildren();Object.keys(lines).forEach(id=>{const item=document.createElement('span');item.className='network-key-item';const swatch=document.createElement('i');swatch.className='network-key-swatch';swatch.style.background=lines[id].color;const text=document.createElement('span');text.textContent=id;item.append(swatch,text);key.appendChild(item)})
+}
+function renderNetworkStats(){let visited=0,passed=0,pending=0,points=0,total=0;Object.keys(lines).forEach(id=>{data[id].statuses.forEach(status=>{total++;if(status==='visited'){visited++;points+=1}else if(status==='passed'){passed++;points+=.5}else pending++})});document.getElementById('visited-count').textContent=visited;document.getElementById('passed-count').textContent=passed;document.getElementById('pending-count').textContent=pending;const percent=Math.round(points/total*100);document.getElementById('progress-value').textContent=`${percent}%`;document.getElementById('progress-fill').style.width=`${percent}%`;const progress=document.getElementById('progress-track');progress.setAttribute('aria-valuenow',String(percent));progress.setAttribute('aria-label','Progrés ponderat de tota la xarxa');document.getElementById('progress-note').textContent=`${total} estacions comptades per línia; els intercanvis compten una vegada per cada línia.`}
+function serialize(){const out={schemaVersion:SCHEMA_VERSION,updatedAt:new Date().toISOString(),lines:{}};Object.keys(lines).forEach(id=>{out.lines[id]={stations:lines[id].stations.map((name,index)=>({name,status:data[id].statuses[index]})),updatedAt:data[id].updatedAt?data[id].updatedAt.toISOString():null}});return out}
+function save(){setSaveIndicator('loading');try{const now=new Date();currentData().updatedAt=now;lastSavedAt=now;const payload=serialize();localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));const check=localStorage.getItem(STORAGE_KEY);if(check!==JSON.stringify(payload))throw new Error('La comprovació del desament no coincideix.');setSaveIndicator('saved',now)}catch(e){setSaveIndicator('error')}}
+function parseDate(value){if(!value)return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:d}
+function validateLineEntries(entries,id){if(!Array.isArray(entries)||entries.length!==lines[id].stations.length)throw new Error(`La ${id} no conté el nombre correcte d’estacions.`);return entries.map((entry,index)=>{if(!entry||entry.name!==lines[id].stations[index]||!validStatuses.has(entry.status))throw new Error(`Les dades de l’estació ${index+1} no són vàlides o no coincideixen amb l’ordre de la ${id}.`);return entry.status})}
+function validateBackup(obj){if(!obj||typeof obj!=='object'||Array.isArray(obj))throw new Error('El fitxer no conté un objecte vàlid.');if(obj.schemaVersion===1&&obj.line==='L1'){return {L1:{statuses:validateLineEntries(obj.stations,'L1'),updatedAt:parseDate(obj.updatedAt)}}}if(![2,3,SCHEMA_VERSION].includes(obj.schemaVersion)||!obj.lines||typeof obj.lines!=='object')throw new Error('La versió o l’estructura del fitxer no és compatible.');if(obj.schemaVersion===SCHEMA_VERSION){for(const id of Object.keys(lines)){if(!obj.lines[id])throw new Error(`Falten les dades de la ${id}.`)}}const result={};for(const id of Object.keys(obj.lines)){if(!lines[id])throw new Error(`La còpia conté una línia desconeguda (${id}).`);const entry=obj.lines[id];result[id]={statuses:validateLineEntries(entry.stations,id),updatedAt:parseDate(entry.updatedAt)}}if(!Object.keys(result).length)throw new Error('La còpia no conté cap línia vàlida.');return result}
+function applyImported(imported){Object.keys(imported).forEach(id=>{data[id].statuses=imported[id].statuses.slice();data[id].updatedAt=imported[id].updatedAt});lastSavedAt=currentData().updatedAt;setSaveIndicator('saved',lastSavedAt)}
+function loadSaved(){try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const parsed=JSON.parse(raw),validated=validateBackup(parsed);applyImported(validated);if(parsed.schemaVersion!==SCHEMA_VERSION)save();return}const old=localStorage.getItem(OLD_L1_KEY);if(old){const parsed=JSON.parse(old),validated=validateBackup(parsed);applyImported(validated);save();return}setSaveIndicator('saved',null)}catch(e){setSaveIndicator('error')}}
+function switchLine(id){if(!lines[id]||id===currentLine)return;currentLine=id;selectedIndex=0;lastSavedAt=currentData().updatedAt;setTheme();buildRoute();render();setSaveIndicator('saved',lastSavedAt)}
+document.querySelectorAll('.line-tab').forEach(button=>button.addEventListener('click',()=>switchLine(button.dataset.line)));
+stationSelect.addEventListener('change',()=>selectStation(Number(stationSelect.value),true));
+statusSelect.addEventListener('change',()=>{const next=statusSelect.value;if(!validStatuses.has(next))return;currentData().statuses[selectedIndex]=next;render();save()});
+document.getElementById('export-btn').addEventListener('click',()=>{const payload=serialize();const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=`registre-metro-barcelona-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url)});
+document.getElementById('import-btn').addEventListener('click',()=>document.getElementById('import-file').click());
+document.getElementById('import-file').addEventListener('change',async event=>{const file=event.target.files&&event.target.files[0];if(!file)return;try{const imported=validateBackup(JSON.parse(await file.text()));if(!window.confirm('La còpia és vàlida. Vols importar les dades? Les línies incloses al fitxer substituiran els seus registres actuals.'))return;const previous={};Object.keys(imported).forEach(id=>previous[id]={statuses:data[id].statuses.slice(),updatedAt:data[id].updatedAt});applyImported(imported);try{const savedPayload=JSON.stringify(serialize());localStorage.setItem(STORAGE_KEY,savedPayload);if(localStorage.getItem(STORAGE_KEY)!==savedPayload)throw new Error('No s’ha pogut verificar el desament.')}catch(e){Object.keys(previous).forEach(id=>{data[id].statuses=previous[id].statuses;data[id].updatedAt=previous[id].updatedAt});render();setSaveIndicator('error');throw e}setTheme();buildRoute();render();lastSavedAt=currentData().updatedAt;setSaveIndicator('saved',lastSavedAt);alert('Còpia importada correctament.')}catch(e){alert(`No s’ha pogut importar la còpia. El registre actual no s’ha substituït.
+
+Motiu: ${e.message||'fitxer no vàlid'}`)}finally{event.target.value=''}});
+document.getElementById('reset-btn').addEventListener('click',()=>{if(!window.confirm(`Segur que vols reiniciar totes les estacions de la ${currentLine}? Tots els estats tornaran a «Pendent de visitar». Aquesta acció no es pot desfer.`))return;const previous=currentData().statuses.slice();currentData().statuses=current().stations.map(()=> 'pending');render();save();if(saveError){currentData().statuses=previous;render();alert('No s’han pogut desar els canvis. El registre anterior s’ha mantingut en aquesta pàgina.')}});
+setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedAt);window.addEventListener('resize',updateRouteSegments);if('ResizeObserver' in window){const routeObserver=new ResizeObserver(updateRouteSegments);routeObserver.observe(route)}
+})();
+</script>
+
+<script>
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(error => {
+      console.warn("No s'ha pogut activar el mode fora de línia:", error);
+    });
+  });
+}
+</script>
+
+</body>
+</html>
