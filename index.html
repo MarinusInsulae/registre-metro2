@@ -4,9 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#d71920">
-<meta name="application-name" content="Registre Metro">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
 <title>Registre ferroviari · Metro de Barcelona</title>
 <style>
 :root{--red:#d71920;--line-soft:#efb8bb;--red-dark:#a80f17;--ink:#242424;--muted:#686868;--paper:#fff;--bg:#f6f6f7;--line:#e5e5e7;--green:#267847;--shadow:0 8px 26px rgba(0,0,0,.07)}
@@ -276,7 +273,7 @@ function setTheme(){
  });
 }
 function selectStation(index,scrollIntoView){selectedIndex=index;stationSelect.value=String(index);statusSelect.value=currentData().statuses[index];stationButtons.forEach((button,i)=>{const selected=i===index;button.classList.toggle('selected',selected);if(selected)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current')});document.getElementById('status-current').textContent=labels[currentData().statuses[index]];document.getElementById('mini-dot').dataset.status=currentData().statuses[index];if(scrollIntoView)stationButtons[index].scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'})}
-function buildRoute(){route.replaceChildren();stationSelect.replaceChildren();stationButtons=[];current().stations.forEach((name,index)=>{const li=document.createElement('li'),button=document.createElement('button');button.type='button';button.className='station';button.dataset.index=String(index);button.dataset.status=currentData().statuses[index];button.setAttribute('aria-label',`${name}: ${labels[currentData().statuses[index]]}`);button.innerHTML='<span class="dot" aria-hidden="true"></span><span class="name"></span>';button.querySelector('.name').textContent=name;button.addEventListener('click',()=>selectStation(index,true));li.appendChild(button);route.appendChild(li);stationButtons.push(button);const option=document.createElement('option');option.value=String(index);option.textContent=name;stationSelect.appendChild(option)});for(let i=0;i<stationButtons.length-1;i++){const segment=document.createElement('span');segment.className='route-segment';segment.dataset.index=String(i);segment.setAttribute('aria-hidden','true');route.firstElementChild.appendChild(segment)}updateRouteSegments()}
+function buildRoute(){route.replaceChildren();stationSelect.replaceChildren();stationButtons=[];current().stations.forEach((name,index)=>{const li=document.createElement('li'),button=document.createElement('button');button.type='button';button.className='station';button.dataset.index=String(index);button.dataset.status=currentData().statuses[index];button.setAttribute('aria-label',`${name}: ${labels[currentData().statuses[index]]}`);button.innerHTML='<span class="dot" aria-hidden="true"></span><span class="name"></span>';button.querySelector('.name').textContent=name;button.addEventListener('click',()=>selectStation(index,true));li.appendChild(button);route.appendChild(li);stationButtons.push(button);const option=document.createElement('option');option.value=String(index);option.textContent=name;stationSelect.appendChild(option)});for(let i=0;i<stationButtons.length-1;i++){const segment=document.createElement('span');segment.className='route-segment';segment.dataset.index=String(i);segment.setAttribute('aria-hidden','true');route.appendChild(segment)}updateRouteSegments()}
 function updateRouteSegments(){const routeRect=route.getBoundingClientRect();route.querySelectorAll('.route-segment').forEach(segment=>{const i=Number(segment.dataset.index),first=stationButtons[i],second=stationButtons[i+1];if(!first||!second)return;const a=first.querySelector('.dot').getBoundingClientRect(),b=second.querySelector('.dot').getBoundingClientRect();const start=(a.top+a.height/2)-routeRect.top,end=(b.top+b.height/2)-routeRect.top;segment.style.top=`${start}px`;segment.style.height=`${Math.max(0,end-start)}px`;const statuses=currentData().statuses;segment.style.display=statuses[i]!=='pending'&&statuses[i+1]!=='pending'?'block':'none'})}
 function render(){
  let visited=0,passed=0,pending=0,points=0;currentData().statuses.forEach((status,index)=>{const button=stationButtons[index];button.dataset.status=status;button.setAttribute('aria-label',`${current().stations[index]}: ${labels[status]}`);if(status==='visited'){visited++;points+=1}else if(status==='passed'){passed++;points+=.5}else pending++});document.getElementById('visited-count').textContent=visited;document.getElementById('passed-count').textContent=passed;document.getElementById('pending-count').textContent=pending;const percent=Math.round(points/current().stations.length*100);document.getElementById('progress-value').textContent=`${percent}%`;document.getElementById('progress-fill').style.width=`${percent}%`;const progress=document.getElementById('progress-track');progress.setAttribute('aria-valuenow',String(percent));progress.setAttribute('aria-label',`Progrés ponderat de la ${currentLine}`);document.getElementById('progress-note').textContent='Cada estació visitada val el 100%; cada estació travessada val el 50%.';updateRouteSegments();selectStation(selectedIndex,false)
@@ -450,16 +447,5 @@ document.getElementById('reset-btn').addEventListener('click',()=>{if(!window.co
 setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedAt);window.addEventListener('resize',updateRouteSegments);if('ResizeObserver' in window){const routeObserver=new ResizeObserver(updateRouteSegments);routeObserver.observe(route)}
 })();
 </script>
-
-<script>
-if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(error => {
-      console.warn("No s'ha pogut activar el mode fora de línia:", error);
-    });
-  });
-}
-</script>
-
 </body>
 </html>
