@@ -76,7 +76,7 @@ html[data-theme="dark"] .route:before{background:color-mix(in srgb,var(--red) 32
     <div class="actions"><button class="btn primary" id="export-btn" type="button">Exportar còpia</button><button class="btn" id="import-btn" type="button">Importar còpia</button><input class="sr-only" id="import-file" type="file" accept=".json,application/json"><button class="btn danger wide" id="reset-btn" type="button">Reiniciar aquesta línia</button></div><p class="backup-help">La còpia inclou totes les línies. També pots importar còpies de seguretat de versions anteriors. Un fitxer incorrecte no substituirà el registre actual.</p>
   </div></section>
 </aside>
-</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.7</span></p>
+</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.8</span></p>
 <script>
 (() => {
 'use strict';
@@ -310,9 +310,10 @@ function setTheme(){
  document.querySelectorAll('.line-tab').forEach(button=>{
   const active=button.dataset.line===currentLine;
   button.setAttribute('aria-pressed',String(active));
-  button.style.background=active?line.color:'#fff';
-  button.style.borderColor=active?line.color:'var(--line)';
-  button.style.color=active?(currentLine!=='L4'?'#fff':'#242424'):'var(--ink)';
+  const darkMode=document.documentElement.dataset.theme==='dark';
+  button.style.background=active?line.color:(darkMode?'#292a31':'#fff');
+  button.style.borderColor=active?line.color:(darkMode?'#484954':'var(--line)');
+  button.style.color=active?(currentLine!=='L4'?'#fff':'#242424'):(darkMode?'#ececf0':'var(--ink)');
  });
 }
 function selectStation(index,scrollIntoView){selectedIndex=index;stationSelect.value=String(index);statusSelect.value=currentData().statuses[index];stationButtons.forEach((button,i)=>{const selected=i===index;button.classList.toggle('selected',selected);if(selected)button.setAttribute('aria-current','true');else button.removeAttribute('aria-current')});document.getElementById('status-current').textContent=labels[currentData().statuses[index]];document.getElementById('mini-dot').dataset.status=currentData().statuses[index];if(scrollIntoView)stationButtons[index].scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'})}
@@ -495,7 +496,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
 })();
 </script>
 <script>
-// Transbord 1.7: força una comprovació de versió i recarrega només quan
+// Transbord 1.8: força una comprovació de versió i recarrega només quan
 // un service worker nou passa a controlar aquesta pàgina.
 (() => {
   if (!('serviceWorker' in navigator)) return;
@@ -507,7 +508,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
   });
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=1.7', {
+      const registration = await navigator.serviceWorker.register('./sw.js?v=1.8', {
         updateViaCache: 'none'
       });
       await registration.update();
