@@ -76,7 +76,7 @@ html[data-theme="dark"] .route:before{background:color-mix(in srgb,var(--red) 32
     <div class="actions"><button class="btn primary" id="export-btn" type="button">Exportar còpia</button><button class="btn" id="import-btn" type="button">Importar còpia</button><input class="sr-only" id="import-file" type="file" accept=".json,application/json"><button class="btn danger wide" id="reset-btn" type="button">Reiniciar aquesta línia</button></div><p class="backup-help">La còpia inclou totes les línies. També pots importar còpies de seguretat de versions anteriors. Un fitxer incorrecte no substituirà el registre actual.</p>
   </div></section>
 </aside>
-</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.6</span></p>
+</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.7</span></p>
 <script>
 (() => {
 'use strict';
@@ -330,7 +330,9 @@ const lineSpecificPixels={
  L2:{'Paral·lel':[650,711],'Sant Antoni':[704,667],'Universitat':[690,604],'Passeig de Gràcia':[815,637],'Tetuan':[842,624],'Monumental':[883,556],'Sagrada Família':[885,514],'Encants':[922,541],'Clot':[976,579],'Bac de Roda':[1030,552]},
  L3:{'Plaça del Centre':[592,480],'Sants Estació':[575,502],'Tarragona':[612,590],'Espanya':[574,606],'Poble Sec':[647,680],'Paral·lel':[650,711],'Drassanes':[676,680],'Liceu':[703,649],'Catalunya':[726,610],'Passeig de Gràcia':[805,582],'Diagonal':[795,514],'Fontana':[770,354],'Lesseps':[764,320],'Vallcarca':[760,295],'Penitents':[788,276],'Vall d’Hebron':[830,245]},
  L4:{'Passeig de Gràcia':[815,637],'Girona':[839,602],'Verdaguer':[847,525],'Joanic':[831,414],'Alfons X':[855,385],'Guinardó | Hospital de Sant Pau':[882,365],'Maragall':[976,377],'Llucmajor':[1050,330],'Via Júlia':[1084,309],'Trinitat Nova':[1023,291]},
- L5:{'Plaça de Sants':[571,503],'Sants Estació':[575,502],'Entença':[636,503],'Hospital Clínic':[675,503],'Diagonal':[795,514],'Verdaguer':[847,525],'Sagrada Família':[885,514],'Sant Pau | Dos de Maig':[925,488],'Camp de l’Arpa':[950,507],'La Sagrera':[1028,526],'El Coll | La Teixonera':[1000,367],'Vall d’Hebron':[830,245]}
+ L5:{'Plaça de Sants':[571,503],'Sants Estació':[575,502],'Entença':[636,503],'Hospital Clínic':[675,503],'Diagonal':[795,514],'Verdaguer':[847,525],'Sagrada Família':[885,514],'Sant Pau | Dos de Maig':[925,488],'Camp de l’Arpa':[950,507],'La Sagrera':[1028,526],'El Coll | La Teixonera':[1000,367],'Vall d’Hebron':[830,245]},
+ // Les línies addicionals s'inicialitzen abans de completar-ne els ancoratges.
+ L9N:{}, L9S:{}, L10N:{}, L10S:{}, L11:{}
 };
 // Compleció d'ancoratges per als trams que abans s'interpolaven en línia recta.
 Object.assign(lineSpecificPixels.L1, {'Hospital de Bellvitge':[224,565],'Bellvitge':[282,539],'Av. Carrilet':[282,508],'Rambla Just Oliveras':[319,471],'Can Serra':[324,457],'Florida':[365,426],'Torrassa':[406,458],'Santa Eulàlia':[428,470],'Mercat Nou':[448,497]});
@@ -493,7 +495,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
 })();
 </script>
 <script>
-// Transbord 1.6: força una comprovació de versió i recarrega només quan
+// Transbord 1.7: força una comprovació de versió i recarrega només quan
 // un service worker nou passa a controlar aquesta pàgina.
 (() => {
   if (!('serviceWorker' in navigator)) return;
@@ -505,7 +507,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
   });
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=1.6', {
+      const registration = await navigator.serviceWorker.register('./sw.js?v=1.7', {
         updateViaCache: 'none'
       });
       await registration.update();
