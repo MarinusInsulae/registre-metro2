@@ -46,11 +46,13 @@ html[data-theme="dark"] .btn.primary{background:var(--red);border-color:var(--re
 html[data-theme="dark"] .btn.danger{color:#ffb4b8;border-color:#744146}
 html[data-theme="dark"] .footer-note{color:var(--muted)}
 html[data-theme="dark"] .route:before{background:color-mix(in srgb,var(--red) 32%,#292a31)}
+.network-picker{max-width:1040px;margin:16px auto 0;padding:0 16px}.network-picker-inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 16px;box-shadow:var(--shadow)}.network-picker label{font-weight:800;font-size:.88rem}.network-picker select{min-height:40px;min-width:220px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--paper);color:var(--ink)}.network-picker .network-note{font-size:.78rem;color:var(--muted);margin:0;flex-basis:100%}html[data-theme="dark"] .network-picker select{background:#24252b;color:var(--ink);border-color:var(--line)}
 @media(max-width:560px){.topbar-inner{align-items:flex-start;flex-wrap:wrap}.heading-copy{flex:1 1 calc(100% - 78px)}.theme-toggle{margin-left:auto}}
 </style>
 </head>
 <body>
 <header class="topbar" id="topbar"><div class="topbar-inner"><div class="line-badge" id="line-badge" aria-label="Línia 1">L1</div><div class="heading-copy"><div class="eyebrow">Metro de Barcelona</div><h1 id="page-title">El meu registre de la L1</h1><p class="subtitle">Marca les estacions que has recorregut.</p></div><button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activa el mode fosc">☾ <span>Mode fosc</span></button></div></header>
+<section class="network-picker" aria-label="Xarxa de transport"><div class="network-picker-inner"><label for="network-select">Xarxa de transport</label><select id="network-select" aria-describedby="network-note"><option value="metro" selected>Metro de Barcelona</option><option value="fgc" disabled>FGC — properament</option><option value="rodalies" disabled>Rodalies de Catalunya — properament</option><option value="tram" disabled>Tram — properament</option></select><p class="network-note" id="network-note">Ara mateix pots registrar el metro. Aquesta estructura prepararà Transbord per incorporar altres xarxes en les properes versions.</p></div></section>
 <main class="wrap" id="main-wrap">
 <section class="card map-card" aria-labelledby="map-title">
   <div class="map-head"><div><h2 id="map-title">Esquema de la línia</h2><p id="map-description">Selecciona una estació per consultar-ne o canviar-ne l'estat.</p></div><span class="pill" id="station-total">30 estacions</span></div>
@@ -76,10 +78,18 @@ html[data-theme="dark"] .route:before{background:color-mix(in srgb,var(--red) 32
     <div class="actions"><button class="btn primary" id="export-btn" type="button">Exportar còpia</button><button class="btn" id="import-btn" type="button">Importar còpia</button><input class="sr-only" id="import-file" type="file" accept=".json,application/json"><button class="btn danger wide" id="reset-btn" type="button">Reiniciar aquesta línia</button></div><p class="backup-help">La còpia inclou totes les línies. També pots importar còpies de seguretat de versions anteriors. Un fitxer incorrecte no substituirà el registre actual.</p>
   </div></section>
 </aside>
-</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.8</span></p>
+</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.9</span></p>
 <script>
 (() => {
 'use strict';
+// Catàleg de xarxes: en aquesta versió només el metro està implementat.
+// Les noves xarxes s'afegiran sense canviar els identificadors ni les dades del metro.
+const NETWORKS = Object.freeze({
+ metro: { id: 'metro', name: 'Metro de Barcelona', implemented: true },
+ fgc: { id: 'fgc', name: 'FGC', implemented: false },
+ rodalies: { id: 'rodalies', name: 'Rodalies de Catalunya', implemented: false },
+ tram: { id: 'tram', name: 'Tram', implemented: false }
+});
 const STORAGE_KEY='registreMetroBarcelona_v2';
 let networkZoom=1,networkPanX=0,networkPanY=0;
 const OLD_L1_KEY='registreMetroBarcelonaL1_v1';
@@ -496,7 +506,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
 })();
 </script>
 <script>
-// Transbord 1.8: força una comprovació de versió i recarrega només quan
+// Transbord 1.9: força una comprovació de versió i recarrega només quan
 // un service worker nou passa a controlar aquesta pàgina.
 (() => {
   if (!('serviceWorker' in navigator)) return;
@@ -508,7 +518,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
   });
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=1.8', {
+      const registration = await navigator.serviceWorker.register('./sw.js?v=1.9', {
         updateViaCache: 'none'
       });
       await registration.update();
