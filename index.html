@@ -282,6 +282,9 @@ function render(){
 // alguns nodes de Passeig de Gràcia/Diagonal en posicions pròximes però diferents
 // segons el corredor. Això evita forçar totes les línies a passar pel mateix punt.
 const lineSpecificPixels={
+ // Inicialitzem totes les línies abans d'afegir-hi ancoratges; sense això,
+ // Object.assign sobre L9S/L10S/L9N/L10N/L11 provoca un error i atura tota l'app.
+ L9N:{}, L9S:{}, L10N:{}, L10S:{}, L11:{},
  // Ancoratges revisats directament sobre el plànol TMB adjunt. Les coordenades són píxels de la imatge original.
  L1:{'Plaça de Sants':[476,500],'Hostafrancs':[506,505],'Espanya':[574,606],'Rocafort':[625,604],'Urgell':[657,604],'Universitat':[690,604],'Catalunya':[726,610],'Urquinaona':[770,650],'Arc de Triomf':[817,650],'Marina':[860,650],'Glòries':[931,609],'Clot':[976,579],'Navas':[1018,550],'La Sagrera':[1028,526],'Fabra i Puig':[1078,500],'Sant Andreu':[1120,470],'Torras i Bages':[1151,454],'Trinitat Vella':[1164,420],'Baró de Viver':[1210,400],'Santa Coloma':[1250,398],'Fondo':[1317,397]},
  L2:{'Paral·lel':[650,711],'Sant Antoni':[704,667],'Universitat':[690,604],'Passeig de Gràcia':[815,637],'Tetuan':[842,624],'Monumental':[883,556],'Sagrada Família':[885,514],'Encants':[922,541],'Clot':[976,579],'Bac de Roda':[1030,552]},

@@ -1,4 +1,4 @@
-const CACHE_NAME = "registre-metro-v2";
+const CACHE_NAME = "registre-metro-v3";
 const APP_FILES = [
   "./",
   "./index.html",
