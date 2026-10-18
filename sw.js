@@ -1,4 +1,5 @@
-const CACHE_NAME = "registre-metro-v1";
+// Transbord 1.6 — actualització immediata i memòria cau versionada.
+const CACHE_NAME = "transbord-cache-v1.6";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -9,36 +10,58 @@ const APP_FILES = [
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_FILES))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(APP_FILES);
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-      ))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter(key => key.startsWith("transbord-cache-") && key !== CACHE_NAME)
+      .map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
-  event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
-      return fetch(request).then(response => {
-        if (response && response.status === 200 && response.type === "basic") {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // Per a les navegacions, prova primer la xarxa. Si no hi ha connexió,
+  // utilitza la còpia guardada. No intercepta altres dominis.
+  if (request.mode === "navigate" || url.pathname.endsWith("/index.html")) {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request, { cache: "no-store" });
+        if (response && response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(new URL("./index.html", self.registration.scope).href, response.clone());
         }
         return response;
-      }).catch(() => caches.match("./index.html"));
-    })
-  );
+      } catch (error) {
+        return (await caches.match(request)) ||
+          (await caches.match(new URL("./index.html", self.registration.scope).href)) ||
+          Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Per als recursos estàtics, utilitza la còpia local i desa els nous.
+  event.respondWith((async () => {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    const response = await fetch(request);
+    if (response && response.ok && response.type === "basic") {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  })());
 });
