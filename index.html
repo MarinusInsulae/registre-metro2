@@ -49,14 +49,14 @@ html[data-theme="dark"] .btn.danger{color:#ffb4b8;border-color:#744146}
 html[data-theme="dark"] .footer-note{color:var(--muted)}
 html[data-theme="dark"] .route:before{background:color-mix(in srgb,var(--red) 32%,#292a31)}
 .network-picker{max-width:1040px;margin:16px auto 0;padding:0 16px}.network-picker-inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 16px;box-shadow:var(--shadow)}.network-picker label{font-weight:800;font-size:.88rem}.network-picker select{min-height:40px;min-width:220px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--paper);color:var(--ink)}.network-picker .network-note{font-size:.78rem;color:var(--muted);margin:0;flex-basis:100%}html[data-theme="dark"] .network-picker select{background:#24252b;color:var(--ink);border-color:var(--line)}
-@media(max-width:560px){.topbar-inner{align-items:flex-start;flex-wrap:wrap}.heading-copy{flex:1 1 calc(100% - 78px)}.theme-toggle{margin-left:auto}}
+@media(max-width:560px){.header-logo{width:40px;height:40px;border-radius:11px}.topbar-inner{align-items:flex-start;flex-wrap:wrap}.heading-copy{flex:1 1 calc(100% - 78px)}.theme-toggle{margin-left:auto}}
 
-/* Pantalla inicial de selecció de xarxa — Transbord 1.9.2 */
+/* Pantalla inicial de selecció de xarxa — Transbord 1.9.3 */
 .home-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 18px 24px;background:var(--bg);color:var(--ink)}
 .home-top{width:min(100%,1000px);display:flex;justify-content:flex-end;margin-bottom:18px}
 .home-screen .theme-toggle{background:var(--paper);color:var(--ink);border-color:var(--line)}
 .home-brand{text-align:center;margin:0 auto 30px;max-width:720px}
-.home-logo{display:inline-grid;place-items:center;width:72px;height:72px;border-radius:22px;background:var(--red);color:#fff;font-weight:900;font-size:2rem;box-shadow:var(--shadow);margin-bottom:16px}
+.home-logo{display:block;width:154px;height:154px;object-fit:cover;border-radius:30px;box-shadow:var(--shadow);margin:0 auto 16px}.header-logo{width:48px;height:48px;object-fit:cover;border-radius:13px;flex:none}
 .home-brand h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;margin:0 0 12px;letter-spacing:-.04em}
 .home-brand p{margin:0;color:var(--muted);font-size:1.05rem}
 .home-network-grid{width:min(100%,920px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
@@ -79,17 +79,17 @@ html[data-theme="dark"] .home-network-icon{background:#3a2528}
 <body>
 <section class="home-screen" id="home-screen" aria-labelledby="home-title">
   <div class="home-top"><button class="theme-toggle" id="home-theme-toggle" type="button" aria-pressed="false" aria-label="Activa el mode fosc">☾ <span>Mode fosc</span></button></div>
-  <div class="home-brand"><div class="home-logo" aria-hidden="true">T</div><h1 id="home-title">Transbord</h1><p>El teu registre personal de xarxes ferroviàries.</p></div>
+  <div class="home-brand"><img class="home-logo" src="./icons/transbord-logo.png?v=1.9.3" alt="Logotip de Transbord"><h1 id="home-title">Transbord</h1><p>El teu registre personal de xarxes ferroviàries.</p></div>
   <div class="home-network-grid" aria-label="Tria una xarxa de transport">
     <button class="home-network-card" type="button" data-open-network="metro"><span class="home-network-icon" aria-hidden="true">🚇</span><span class="home-network-copy"><strong>Metro de Barcelona</strong><small>Registra les estacions que has recorregut</small></span></button>
     <button class="home-network-card" type="button" disabled><span class="home-network-icon" aria-hidden="true">🚆</span><span class="home-network-copy"><strong>FGC</strong><small>Properament</small></span></button>
     <button class="home-network-card" type="button" disabled><span class="home-network-icon" aria-hidden="true">🚉</span><span class="home-network-copy"><strong>Rodalies de Catalunya</strong><small>Properament</small></span></button>
     <button class="home-network-card" type="button" disabled><span class="home-network-icon" aria-hidden="true">🚊</span><span class="home-network-copy"><strong>Tram</strong><small>Properament</small></span></button>
   </div>
-  <div class="home-foot"><img src="./icons/icon-192.png" alt="" style="width:34px;height:34px;vertical-align:middle;border-radius:9px;margin-right:7px">Transbord · 1.9.2</div>
+  <div class="home-foot"><img src="./icons/transbord-logo.png?v=1.9.3" alt="Logotip de Transbord" style="width:34px;height:34px;object-fit:cover;vertical-align:middle;border-radius:9px;margin-right:7px">Transbord · 1.9.3</div>
 </section>
 <div id="app-shell" hidden>
-<header class="topbar" id="topbar"><div class="topbar-inner"><div class="line-badge" id="line-badge" aria-label="Línia 1">L1</div><div class="heading-copy"><div class="eyebrow">Metro de Barcelona</div><h1 id="page-title">El meu registre de la L1</h1><p class="subtitle">Marca les estacions que has recorregut.</p></div><button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activa el mode fosc">☾ <span>Mode fosc</span></button></div></header>
+<header class="topbar" id="topbar"><div class="topbar-inner"><img class="header-logo" src="./icons/transbord-logo.png?v=1.9.3" alt="Transbord"><div class="line-badge" id="line-badge" aria-label="Línia 1">L1</div><div class="heading-copy"><div class="eyebrow">Metro de Barcelona</div><h1 id="page-title">El meu registre de la L1</h1><p class="subtitle">Marca les estacions que has recorregut.</p></div><button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activa el mode fosc">☾ <span>Mode fosc</span></button></div></header>
 <section class="network-picker" aria-label="Xarxa de transport"><div class="network-picker-inner"><label for="network-select">Xarxa de transport</label><select id="network-select" aria-describedby="network-note"><option value="metro" selected>Metro de Barcelona</option><option value="fgc" disabled>FGC — properament</option><option value="rodalies" disabled>Rodalies de Catalunya — properament</option><option value="tram" disabled>Tram — properament</option></select><p class="network-note" id="network-note">Ara mateix pots registrar el metro. Aquesta estructura prepararà Transbord per incorporar altres xarxes en les properes versions.</p><button class="back-home" id="back-home" type="button">← Canviar de xarxa</button></div></section>
 <main class="wrap" id="main-wrap">
 <section class="card map-card" aria-labelledby="map-title">
@@ -116,7 +116,7 @@ html[data-theme="dark"] .home-network-icon{background:#3a2528}
     <div class="actions"><button class="btn primary" id="export-btn" type="button">Exportar còpia</button><button class="btn" id="import-btn" type="button">Importar còpia</button><input class="sr-only" id="import-file" type="file" accept=".json,application/json"><button class="btn danger wide" id="reset-btn" type="button">Reiniciar aquesta línia</button></div><p class="backup-help">La còpia inclou totes les línies. També pots importar còpies de seguretat de versions anteriors. Un fitxer incorrecte no substituirà el registre actual.</p>
   </div></section>
 </aside>
-</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.9.2</span></p>
+</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.9.3</span></p>
 </div>
 <script>
 (() => {
@@ -570,7 +570,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
   });
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=1.9.2', {
+      const registration = await navigator.serviceWorker.register('./sw.js?v=1.9.3', {
         updateViaCache: 'none'
       });
       await registration.update();
