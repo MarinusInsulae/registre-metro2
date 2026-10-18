@@ -1,4 +1,5 @@
-const CACHE_NAME = "transbord-cache-v2";
+// Transbord 1.5 — versió de memòria cau actualitzada per forçar la renovació de l'app.
+const CACHE_NAME = "transbord-cache-v3";
 const APP_FILES = [
   "./",
   "./index.html",
@@ -20,7 +21,8 @@ self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        keys.filter(key => key.startsWith("transbord-cache-") && key !== CACHE_NAME)
+          .map(key => caches.delete(key))
       ))
       .then(() => self.clients.claim())
   );
@@ -31,35 +33,35 @@ self.addEventListener("fetch", event => {
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
-  const isAppDocument = request.mode === "navigate" || url.pathname.endsWith("/index.html");
+  if (url.origin !== self.location.origin) return;
 
-  // Always try to get the newest HTML first; use the cached page only offline.
-  if (isAppDocument) {
-    event.respondWith(
-      fetch(request)
-        .then(response => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put("./index.html", copy));
-          }
-          return response;
-        })
-        .catch(() => caches.match("./index.html"))
-    );
+  // Per a la pàgina principal, prioritza sempre la xarxa; només usa la còpia
+  // local si el dispositiu està fora de línia.
+  if (request.mode === "navigate" || url.pathname.endsWith("/index.html")) {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request, { cache: "no-store" });
+        if (response && response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put("./index.html", response.clone());
+        }
+        return response;
+      } catch (error) {
+        return (await caches.match(request)) || (await caches.match("./index.html")) || Response.error();
+      }
+    })());
     return;
   }
 
-  // Cache-first for icons and manifest, with network fallback for uncached assets.
-  event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
-      return fetch(request).then(response => {
-        if (response && response.ok && response.type === "basic") {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
-        }
-        return response;
-      });
-    })
-  );
+  // Per als recursos estàtics, aprofita la memòria cau i desa els que faltin.
+  event.respondWith((async () => {
+    const cached = await caches.match(request);
+    if (cached) return cached;
+    const response = await fetch(request);
+    if (response && response.ok && response.type === "basic") {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  })());
 });
