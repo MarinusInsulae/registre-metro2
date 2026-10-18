@@ -1,12 +1,13 @@
-// Transbord 1.9.1 — actualització immediata i memòria cau versionada.
-const CACHE_NAME = "transbord-cache-v1.9.1";
+// Transbord 1.9.2 — actualització immediata i memòria cau versionada.
+const CACHE_NAME = "transbord-cache-v1.9.2";
 const APP_FILES = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/icon-512-maskable.png"
+  "./icons/icon-512-maskable.png",
+  "./icons/favicon-64.png"
 ];
 
 self.addEventListener("install", event => {

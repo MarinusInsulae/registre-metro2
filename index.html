@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#d71920">
+<meta name="theme-color" content="#06162e">
+<link rel="icon" type="image/png" sizes="64x64" href="./icons/favicon-64.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <title>Registre ferroviari · Metro de Barcelona</title>
 <style>
 :root{--red:#d71920;--line-soft:#efb8bb;--red-dark:#a80f17;--ink:#242424;--muted:#686868;--paper:#fff;--bg:#f6f6f7;--line:#e5e5e7;--green:#267847;--shadow:0 8px 26px rgba(0,0,0,.07)}
@@ -49,7 +51,7 @@ html[data-theme="dark"] .route:before{background:color-mix(in srgb,var(--red) 32
 .network-picker{max-width:1040px;margin:16px auto 0;padding:0 16px}.network-picker-inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 16px;box-shadow:var(--shadow)}.network-picker label{font-weight:800;font-size:.88rem}.network-picker select{min-height:40px;min-width:220px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:var(--paper);color:var(--ink)}.network-picker .network-note{font-size:.78rem;color:var(--muted);margin:0;flex-basis:100%}html[data-theme="dark"] .network-picker select{background:#24252b;color:var(--ink);border-color:var(--line)}
 @media(max-width:560px){.topbar-inner{align-items:flex-start;flex-wrap:wrap}.heading-copy{flex:1 1 calc(100% - 78px)}.theme-toggle{margin-left:auto}}
 
-/* Pantalla inicial de selecció de xarxa — Transbord 1.9.1 */
+/* Pantalla inicial de selecció de xarxa — Transbord 1.9.2 */
 .home-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 18px 24px;background:var(--bg);color:var(--ink)}
 .home-top{width:min(100%,1000px);display:flex;justify-content:flex-end;margin-bottom:18px}
 .home-screen .theme-toggle{background:var(--paper);color:var(--ink);border-color:var(--line)}
@@ -84,7 +86,7 @@ html[data-theme="dark"] .home-network-icon{background:#3a2528}
     <button class="home-network-card" type="button" disabled><span class="home-network-icon" aria-hidden="true">🚉</span><span class="home-network-copy"><strong>Rodalies de Catalunya</strong><small>Properament</small></span></button>
     <button class="home-network-card" type="button" disabled><span class="home-network-icon" aria-hidden="true">🚊</span><span class="home-network-copy"><strong>Tram</strong><small>Properament</small></span></button>
   </div>
-  <div class="home-foot">Transbord · 1.9.1</div>
+  <div class="home-foot"><img src="./icons/icon-192.png" alt="" style="width:34px;height:34px;vertical-align:middle;border-radius:9px;margin-right:7px">Transbord · 1.9.2</div>
 </section>
 <div id="app-shell" hidden>
 <header class="topbar" id="topbar"><div class="topbar-inner"><div class="line-badge" id="line-badge" aria-label="Línia 1">L1</div><div class="heading-copy"><div class="eyebrow">Metro de Barcelona</div><h1 id="page-title">El meu registre de la L1</h1><p class="subtitle">Marca les estacions que has recorregut.</p></div><button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Activa el mode fosc">☾ <span>Mode fosc</span></button></div></header>
@@ -114,7 +116,7 @@ html[data-theme="dark"] .home-network-icon{background:#3a2528}
     <div class="actions"><button class="btn primary" id="export-btn" type="button">Exportar còpia</button><button class="btn" id="import-btn" type="button">Importar còpia</button><input class="sr-only" id="import-file" type="file" accept=".json,application/json"><button class="btn danger wide" id="reset-btn" type="button">Reiniciar aquesta línia</button></div><p class="backup-help">La còpia inclou totes les línies. També pots importar còpies de seguretat de versions anteriors. Un fitxer incorrecte no substituirà el registre actual.</p>
   </div></section>
 </aside>
-</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.9.1</span></p>
+</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 1.9.2</span></p>
 </div>
 <script>
 (() => {
@@ -568,7 +570,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
   });
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=1.9.1', {
+      const registration = await navigator.serviceWorker.register('./sw.js?v=1.9.2', {
         updateViaCache: 'none'
       });
       await registration.update();

@@ -1,15 +1,15 @@
 {
   "id": "./",
-  "name": "Registre ferroviari · Metro de Barcelona",
-  "short_name": "Registre Metro",
-  "description": "Registra les estacions de metro de Barcelona que has visitat o travessat.",
+  "name": "Transbord",
+  "short_name": "Transbord",
+  "description": "Registra les estacions i les xarxes de transport que has recorregut.",
   "lang": "ca",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f6f6f7",
-  "theme_color": "#d71920",
+  "background_color": "#06162e",
+  "theme_color": "#06162e",
   "icons": [
     {
       "src": "./icons/icon-192.png",
