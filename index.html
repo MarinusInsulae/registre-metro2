@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#d71920">
+<link rel="manifest" href="./manifest.webmanifest">
 <title>Registre ferroviari · Metro de Barcelona</title>
 <style>
 :root{--red:#d71920;--line-soft:#efb8bb;--red-dark:#a80f17;--ink:#242424;--muted:#686868;--paper:#fff;--bg:#f6f6f7;--line:#e5e5e7;--green:#267847;--shadow:0 8px 26px rgba(0,0,0,.07)}
@@ -449,6 +450,14 @@ Motiu: ${e.message||'fitxer no vàlid'}`)}finally{event.target.value=''}});
 document.getElementById('reset-btn').addEventListener('click',()=>{if(!window.confirm(`Segur que vols reiniciar totes les estacions de la ${currentLine}? Tots els estats tornaran a «Pendent de visitar». Aquesta acció no es pot desfer.`))return;const previous=currentData().statuses.slice();currentData().statuses=current().stations.map(()=> 'pending');render();save();if(saveError){currentData().statuses=previous;render();alert('No s’han pogut desar els canvis. El registre anterior s’ha mantingut en aquesta pàgina.')}});
 setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedAt);window.addEventListener('resize',updateRouteSegments);if('ResizeObserver' in window){const routeObserver=new ResizeObserver(updateRouteSegments);routeObserver.observe(route)}
 })();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js", { scope: "./" })
+      .catch(error => console.error("No s'ha pogut registrar el service worker:", error));
+  });
+}
 </script>
 </body>
 </html>
