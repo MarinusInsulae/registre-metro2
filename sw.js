@@ -1,5 +1,5 @@
-// Transbord 1.9.5 — actualització immediata i memòria cau versionada.
-const CACHE_NAME = "transbord-cache-v1.9.5";
+// Transbord 1.9.6 — actualització immediata i memòria cau versionada.
+const CACHE_NAME = "transbord-cache-v1.9.6";
 const APP_FILES = [
   "./",
   "./index.html",
