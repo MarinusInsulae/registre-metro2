@@ -492,5 +492,15 @@ document.getElementById('theme-toggle').addEventListener('click',()=>{const next
 setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedAt);window.addEventListener('resize',updateRouteSegments);if('ResizeObserver' in window){const routeObserver=new ResizeObserver(updateRouteSegments);routeObserver.observe(route)}
 })();
 </script>
+<script>
+// Registra i actualitza la memòria cau de la PWA quan s'allotja amb HTTPS.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(error => {
+      console.warn('No s’ha pogut registrar el service worker:', error);
+    });
+  });
+}
+</script>
 </body>
 </html>
