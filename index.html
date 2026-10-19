@@ -117,7 +117,7 @@ html[data-theme="dark"] .home-network-icon{background:#3a2528}
     <div class="actions"><button class="btn primary" id="export-btn" type="button">Exportar còpia</button><button class="btn" id="import-btn" type="button">Importar còpia</button><input class="sr-only" id="import-file" type="file" accept=".json,application/json"><button class="btn danger wide" id="reset-btn" type="button">Reiniciar aquesta línia</button></div><p class="backup-help">La còpia inclou totes les línies. També pots importar còpies de seguretat de versions anteriors. Un fitxer incorrecte no substituirà el registre actual.</p>
   </div></section>
 </aside>
-</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 2.0.2</span></p>
+</main><p class="footer-note">Les dades es guarden al navegador d'aquest dispositiu. Exporta una còpia si vols conservar-les o traslladar-les a un altre dispositiu.<br><span class="app-version">Transbord · 2.0.3</span></p>
 </div>
 <script>
 (() => {
@@ -562,7 +562,7 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
 })();
 </script>
 <script>
-// Transbord 1.9.7: comprova l'actualització quan s'obre i quan torna a primer pla.
+// Transbord 2.0.3: comprova l'actualització en obrir, tornar al primer pla i carregar la PWA.
 (() => {
   if (!('serviceWorker' in navigator)) return;
   let reloadingForNewWorker = false;
@@ -574,10 +574,11 @@ setTheme();loadSaved();buildRoute();render();setSaveIndicator('saved',lastSavedA
 
   async function checkForAppUpdate() {
     try {
-      const registration = await navigator.serviceWorker.register('./sw.js?v=2.0.2', {
+      const registration = await navigator.serviceWorker.register('./sw.js?v=2.0.3', {
         updateViaCache: 'none'
       });
       await registration.update();
+      if (registration.waiting) await registration.waiting.postMessage({ type: 'SKIP_WAITING' });
     } catch (error) {
       console.warn('No s’ha pogut comprovar l’actualització de Transbord:', error);
     }

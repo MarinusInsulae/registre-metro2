@@ -1,7 +1,6 @@
-// Transbord 2.0.2 — actualització immediata i memòria cau versionada.
-const CACHE_NAME = "transbord-cache-v2.0.2";
-const APP_FILES = [
-  "./",
+// Transbord 2.0.3 — actualització reforçada per a navegador i PWA instal·lada.
+const CACHE_NAME = "transbord-cache-v2.0.3";
+const SHELL_FILES = [
   "./index.html",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
@@ -14,9 +13,19 @@ const APP_FILES = [
 self.addEventListener("install", event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    await cache.addAll(APP_FILES);
+    // No reutilitzar còpies HTTP antigues quan es prepara una versió nova.
+    await Promise.all(SHELL_FILES.map(async path => {
+      const request = new Request(new URL(path, self.registration.scope), { cache: "reload" });
+      const response = await fetch(request);
+      if (!response.ok) throw new Error(`No s'ha pogut descarregar ${path}`);
+      await cache.put(request, response);
+    }));
     await self.skipWaiting();
   })());
+});
+
+self.addEventListener("message", event => {
+  if (event.data && event.data.type === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("activate", event => {
@@ -35,9 +44,8 @@ self.addEventListener("fetch", event => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Per a les navegacions, prova primer la xarxa. Si no hi ha connexió,
-  // utilitza la còpia guardada. No intercepta altres dominis.
-  if (request.mode === "navigate" || url.pathname.endsWith("/index.html")) {
+  // Les pàgines sempre intenten obtenir la versió publicada a la xarxa.
+  if (request.mode === "navigate" || url.pathname.endsWith("/index.html") || url.pathname === new URL(self.registration.scope).pathname) {
     event.respondWith((async () => {
       try {
         const response = await fetch(request, { cache: "no-store" });
@@ -55,15 +63,17 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // Per als recursos estàtics, utilitza la còpia local i desa els nous.
+  // Recursos estàtics: xarxa primer per detectar actualitzacions; memòria cau si no hi ha xarxa.
   event.respondWith((async () => {
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    const response = await fetch(request);
-    if (response && response.ok && response.type === "basic") {
-      const cache = await caches.open(CACHE_NAME);
-      await cache.put(request, response.clone());
+    try {
+      const response = await fetch(request, { cache: "no-store" });
+      if (response && response.ok && response.type === "basic") {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, response.clone());
+      }
+      return response;
+    } catch (error) {
+      return (await caches.match(request)) || Response.error();
     }
-    return response;
   })());
 });
