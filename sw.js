@@ -1,5 +1,5 @@
-// Transbord 3.4.3 — actualització reforçada per a navegador i PWA instal·lada.
-const CACHE_NAME = "transbord-cache-v3.4.3";
+// Transbord 3.4.4 — actualització reforçada per a navegador i PWA instal·lada.
+const CACHE_NAME = "transbord-cache-v3.4.4";
 const SHELL_FILES = [
   "./index.html",
   "./manifest.webmanifest",
