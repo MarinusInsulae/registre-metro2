@@ -1,0 +1,61 @@
+Transbord 3.4.27 — revisió de colors de totes les línies
+
+- FV (revisió final): nom corregit de «Peu del Funicular» a «Vallvidrera Inferior»; es manté «Vallvidrera Superior».
+- RL1: «Lleida-Pirineus» corregit a «Lleida Pirineus» i afegida «Polígon industrial del Segre» entre Lleida Pirineus i Alcoletge.
+- RL2: s’aplica la mateixa denominació i parada compartida del tram inicial.
+Canvis d’aquesta iteració:
+- R50 (revisió final): afegides Pallejà i Sant Andreu de la Barca entre Sant Vicenç dels Horts i Martorell Central.
+- R50: el nom de la parada s’actualitza a Martorell Central; afegida Sant Vicenç-CastellGalí entre Monistrol de Montserrat (tren) i Manresa-Viladordis.
+- R60: eliminades les parades que no pertanyen a aquesta línia segons la revisió indicada.
+- R60: Can Parellada actualitzada a Sant Esteve Sesrovires.
+- Es preserven les correccions anteriors de l’aplicació.
+
+Publicació a GitHub Pages:
+1. Descomprimeix el ZIP.
+2. Puja el contingut de la carpeta Transbord_3.4.27 a l’arrel del repositori, substituint els fitxers anteriors.
+3. Si l’aplicació continua mostrant una versió antiga, refresca-la o tanca i torna a obrir la PWA.
+
+Les dades de l’aplicació es guarden al navegador del dispositiu. Exporta’n una còpia abans de canviar de dispositiu o de netejar les dades del navegador.
+
+
+Versió 3.4.27
+- Revisió del Funicular de Gelida: el nom de la primera estació és «Estació ferrocarril».
+- Sincorpora la línia del Funicular de Gelida a la selecció FGC amb les tres estacions revisades fins ara.
+
+
+Versió 3.4.27
+- Cremallera de Montserrat (CM): «Monistrol de Montserrat (tren)» corregit a «Monistrol de Montserrat».
+- CM: «Monistrol Vila» corregit a «Monistrol-Vila».
+- Revisió final del Funicular de Gelida (FG) completada sense més canvis indicats.
+- Es preserven les correccions i funcionalitats anteriors.
+
+
+Canvi d’aquesta versió (3.4.27): actualització de la paleta de colors de Rodalies, Metro, Tram i FGC segons els codis facilitats. S’ha incorporat el color exacte de R6 (#95969A).
+
+
+Canvi d’aquesta versió (3.4.27): color principal de R6 actualitzat a #95969A segons la confirmació de l’usuari.
+
+
+Canvis de la versió 3.4.27:
+- En mòbils, les pestanyes per canviar de línia es mostren just després del selector «Xarxa de transport» i abans del bloc de progrés. En pantalles grans, es mantenen dins del bloc de l'esquema de línia.
+- A la RL4, el text de la capçalera, l'identificador de línia i la pestanya activa passa a fosc per millorar el contrast sobre el groc #FFDD00.
+
+
+Novetats de la versió 3.4.27:
+- En seleccionar una estació des del desplegable, la pàgina ja no es desplaça automàticament.
+- Nova vista de consulta amb el resum del progrés de tota la xarxa seleccionada. Les dades s actualitzen automàticament quan canvies estats a les línies.
+- El resum compta cada estació per línia; els intercanvis que pertanyen a més d una línia es compten una vegada a cada línia.
+- La vista global és només de consulta; per editar estacions cal tornar a la vista de línies.
+
+
+Novetats de la versió 3.4.33:
+- Vista global ampliada amb esquemes compactes de totes les línies de la xarxa seleccionada.
+- Cada estació es representa segons el seu estat: visitada, travessada o pendent.
+- Els esquemes s actualitzen automàticament quan canvia l estat de les estacions i són només de consulta.
+
+
+Correccions de la versió 3.4.33: la vista global és independent del color de la línia activa, amaga el selector de línies i s’adapta a amplades grans i a pantalles mòbils.
+
+
+FASE 4.1 — CERCADOR GLOBAL D’ESTACIONS
+Aquesta versió incorpora un cercador accessible des de la pantalla inicial i des de la interfície de les xarxes. Cerca noms d’estacions a totes les línies, sense distingir majúscules ni accents, i mostra l’estat registrat per línia. Els noms coincidents s’agrupen; això no certifica per si sol que siguin una correspondència física.
