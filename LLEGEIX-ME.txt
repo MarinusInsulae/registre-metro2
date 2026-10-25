@@ -1,3 +1,24 @@
+Transbord 5.0.0 — canvis d’aquesta versió
+
+- Cercador: afegides les correspondències Av. Carrilet / L’Hospitalet-Av. Carrilet, Espanya / Barcelona - Plaça Espanya, El Maresme | Fòrum / El Maresme i Monistrol de Montserrat (tren) / Monistrol de Montserrat.
+- Revisió de separacions: eliminada la fusió Sant Cugat Coll Favà / Volpelleres; queden com a resultats independents (R8 i S2).
+- Revisió de separacions: eliminada la fusió L’Hospitalet de Llobregat / Rambla Just Oliveras; queden independents (R1/R3/R4/RG1 i L1, respectivament).
+- S4: afegida l’estació «El Palau» entre «Sant Andreu de la Barca» i «Martorell Vila».
+- Es preserven la jerarquia dinàmica funcional del cercador, les correspondències i separacions anteriors, la RT2 revisada i les funcionalitats existents.
+
+Publicació: puja el contingut de la carpeta Transbord_5.0.0 a l’arrel del repositori GitHub Pages, substituint els fitxers anteriors.
+
+Transbord 4.1.6 — canvis d’aquesta versió
+
+- Cercador global: corregida la identificació de xarxa per línia. Ara s’obté a partir de les llistes oficials de línies, perquè les línies de Metro i Tram no sempre tenen la propietat `network` dins de la definició. Això era la causa que impedia aplicar de manera fiable la jerarquia dinàmica.
+- Cercador: prioritat contextual explícita. Des de la pantalla inicial: Rodalies → Metro → FGC → Tram; des d’una xarxa: xarxa d’origen primer i després les altres en aquest ordre.
+- Cercador: incorporades les correspondències de les parts 1–5 de la revisió, incloses La Sagrera, Fabra i Puig, Torre Baró | Vallbona, Ribes de Freser/Ribes-Enllaç i Sant Cugat Coll Favà/Volpelleres.
+- Separades les estacions homònimes Girona (Rodalies/Metro), La Floresta (Rodalies/FGC) i Tarragona (Rodalies/Metro).
+- R4 i RL4: «Sant Vicenç-CastellGalí» corregida a «Sant Vicenç de Castellet»; la correspondència amb R5/R50 manté el nom propi d’aquestes línies.
+- Es manté el recorregut de RT2 amb les set parades revisades.
+
+Publicació: puja el contingut de la carpeta Transbord_4.1.6 a l’arrel del repositori GitHub Pages, substituint els fitxers anteriors.
+
 Transbord 3.4.27 — revisió de colors de totes les línies
 
 - FV (revisió final): nom corregit de «Peu del Funicular» a «Vallvidrera Inferior»; es manté «Vallvidrera Superior».
@@ -48,14 +69,32 @@ Novetats de la versió 3.4.27:
 - La vista global és només de consulta; per editar estacions cal tornar a la vista de línies.
 
 
-Novetats de la versió 3.4.33:
+Novetats de la versió 4.1.4:
 - Vista global ampliada amb esquemes compactes de totes les línies de la xarxa seleccionada.
 - Cada estació es representa segons el seu estat: visitada, travessada o pendent.
 - Els esquemes s actualitzen automàticament quan canvia l estat de les estacions i són només de consulta.
 
 
-Correccions de la versió 3.4.33: la vista global és independent del color de la línia activa, amaga el selector de línies i s’adapta a amplades grans i a pantalles mòbils.
+Correccions de la versió 4.1.4: la vista global és independent del color de la línia activa, amaga el selector de línies i s’adapta a amplades grans i a pantalles mòbils.
 
 
 FASE 4.1 — CERCADOR GLOBAL D’ESTACIONS
 Aquesta versió incorpora un cercador accessible des de la pantalla inicial i des de la interfície de les xarxes. Cerca noms d’estacions a totes les línies, sense distingir majúscules ni accents, i mostra l’estat registrat per línia. Els noms coincidents s’agrupen; això no certifica per si sol que siguin una correspondència física.
+
+
+Novetats de la versió 4.1.5:
+- RT2 revisada amb les set parades en l'ordre indicat: L'Arboç, El Vendrell, Sant Vicenç de Calders, Torredembarra, Altafulla - Tamarit, Tarragona i Salou - Port Aventura.
+- Sant Vicenç de Calders s'incorpora explícitament a les correspondències del cercador.
+- Corregida l'ordenació dels resultats del cercador: ara els grups d'estacions també es prioritzen segons la jerarquia de xarxes i línies, no només les línies dins de cada grup.
+
+Per publicar aquesta versió, puja el contingut de la carpeta Transbord_4.1.5 a l'arrel del repositori GitHub Pages, substituint els fitxers anteriors.
+
+
+TRANSBORD 5.0.0 — FASE 5 (SINCRONITZACIÓ MANUAL AMB GOOGLE SHEETS)
+- Afegeix un panell de Google Sheets accessible des de la pantalla inicial i de les pantalles de línia.
+- Utilitza Google Identity Services per demanar autorització al compte de Google. No inclou cap secret OAuth al codi.
+- Permet pujar el registre local a la cel·la A1 de la primera pestanya del full central i descarregar-lo a un altre dispositiu.
+- La transferència és manual i explícita; no hi ha sincronització automàtica ni fusió de canvis.
+- El registre local i les funcions de còpia de seguretat existents es conserven.
+- Requereix connexió a Internet, el Client ID OAuth configurat i accés d'edició al full central.
+- No s'ha pogut provar l'autorització real ni les operacions API amb el compte de l'usuari des d'aquest entorn. Cal provar-les al navegador.
